@@ -56,13 +56,15 @@ function TestBuffer:test_can_display_python_structure()
     -- Test that we can extract the python structure from a buffer containing python code.
     local structure = self.buffer:export_structure_python()
 
-    assert(structure['classes'] == true)
-    assert(structure['functions'] == true)
-    assert(structure['constants'] == true)
+    -- We expect a table in return with data in it
+    lu.assertEvalToTrue(structure['classes'])
+    lu.assertEvalToTrue(structure['functions'])
+    lu.assertEvalToTrue(structure['constants'])
 
-    assert(structure['classes'] ~= nil)
-    assert(structure['functions'] ~= nil)
-    assert(structure['constants'] ~= nil)
+    -- From our test files, there should be at least 1 element in each category.
+    lu.assertNotEquals(structure['classes'], {})
+    lu.assertNotEquals(structure['functions'], {})
+    lu.assertNotEquals(structure['constants'], {})
 end
 
 -- class TestBuffer
