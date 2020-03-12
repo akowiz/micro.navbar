@@ -5,7 +5,7 @@
 --------------------------------------------------------------------------------
 
 local lu = require('luaunit')
-local nb = require('navbar')
+local nb = require('navbar_python')
 
 
 
@@ -35,6 +35,6 @@ TestBuffer = {} --class
 -- Running the test
 --------------------------------------------------------------------------------
 
-cal runner = lu.LuaUnit.new()
+local runner = lu.LuaUnit.new()
 -- runner:setOutputType("junit", "junit_xml_file")
 os.exit( runner:runSuite() )
