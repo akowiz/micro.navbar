@@ -25,7 +25,6 @@ end
 
 TestBuffer = {} --class
 
-
 function TestBuffer:setUp()
     -- Set-up function for our tests.
 
@@ -68,6 +67,33 @@ function TestBuffer:test_can_display_python_structure()
 end
 
 -- class TestBuffer
+
+
+TestNode = {} -- class
+
+function TestNode:setUp()
+    -- Set-up function for our tests.
+
+end
+
+function TestNode:test_can_save_node()
+    -- Test that we can store a node information into an object.
+
+    kind = nbp.T_CLASS
+    name = "TestClass"
+    line = 10
+    indent = 4
+    parent = nil
+
+    node = nbp.Node:new(nil, name, kind, line, indent, parent)
+    lu.assertEquals(node.kind, kind)
+    lu.assertEquals(node.name, name)
+    lu.assertEquals(node.line, line)
+    lu.assertEquals(node.indent, indent)
+    lu.assertEquals(node.parent, parent)
+end
+
+-- class TestNode
 
 
 
