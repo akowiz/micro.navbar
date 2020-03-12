@@ -38,8 +38,13 @@ function TestBuffer:test_can_display_buffer_by_lines()
     assert(#buffer ~= 0)
 
     -- Split the content of the buffer into lines to be processed later.
-    local lines = nbp.split(buffer, "\n")
-
+    local lines = buffer:split("\n")
+    assert(lines ~= nil)
+--[[
+    for n, line in ipairs(lines) do
+        print(line)
+    end
+--]]
     -- Rebuild the buffer using the lines
     local rebuild = table.concat(lines, '\n')
 
