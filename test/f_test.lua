@@ -25,20 +25,20 @@ end
 
 TestBuffer = {} --class
 
+
 function TestBuffer:setUp()
-    -- set up tests
-    self.a = 1
+    -- Set-up function for our tests.
+
+    -- Read the content of our buffer from a file
+    self.buffer = buffer_from_file('../data/python_file.py')
+    assert(#self.buffer > 0)
 end
 
 function TestBuffer:test_can_display_buffer_by_lines()
     -- Test that we can access a buffer and display it's content line by line.
 
-    -- Read content from a file and store it in a table like a buffer
-    buffer = buffer_from_file('../data/python_file.py')
-    assert(#buffer ~= 0)
-
     -- Split the content of the buffer into lines to be processed later.
-    local lines = buffer:split("\n")
+    local lines = self.buffer:split("\n")
     assert(lines ~= nil)
 --[[
     for n, line in ipairs(lines) do
@@ -49,7 +49,7 @@ function TestBuffer:test_can_display_buffer_by_lines()
     local rebuild = table.concat(lines, '\n')
 
     -- Make sure we have not lost anything
-    assert(buffer == rebuild)
+    assert(self.buffer == rebuild)
 end
 
 -- class TestBuffer
