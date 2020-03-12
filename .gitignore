@@ -2,3 +2,4 @@ support/
 
 test/luaunit.lua
 test/old_test.lua
+test/navbar_python.lua
