@@ -12,7 +12,7 @@ local nbp = require('navbar_python')
 -- Helper Functions
 -------------------------------------------------------------------------------
 
--- read a file and returns all the content (to simulatte access to buffer)
+-- Read a file and returns all the content (to simulatte access to buffer)
 local function buffer_from_file(path)
     local file = io.open(path, "r") -- r read mode and b binary mode
     if not file then return nil end
@@ -50,6 +50,19 @@ function TestBuffer:test_can_display_buffer_by_lines()
 
     -- Make sure we have not lost anything
     assert(self.buffer == rebuild)
+end
+
+function TestBuffer:test_can_display_python_structure()
+    -- Test that we can extract the python structure from a buffer containing python code.
+    local structure = self.buffer:export_structure_python()
+
+    assert(structure['classes'] == true)
+    assert(structure['functions'] == true)
+    assert(structure['constants'] == true)
+
+    assert(structure['classes'] ~= nil)
+    assert(structure['functions'] ~= nil)
+    assert(structure['constants'] ~= nil)
 end
 
 -- class TestBuffer
