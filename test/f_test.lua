@@ -66,8 +66,8 @@ function TestBuffer:test_can_display_python_structure()
     lu.assertNotEquals(structure['constants'], {})
 
     -- We expect the items in structure to be nodes
-    local class_root_1 = nbp.Node:new("Foo", nbp.T_CLASS, 19, 0, nil)
-    local class_root_2 = nbp.Node:new("Bar", nbp.T_CLASS, 29, 0, nil)
+    local class_root_1 = nbp.Node:new("Foo", nbp.T_CLASS, 34, 0, nil)
+    local class_root_2 = nbp.Node:new("Bar", nbp.T_CLASS, 44, 0, nil)
     local func_root_1 = nbp.Node:new("combine_data", nbp.T_FUNCTION, 7, 0, nil)
     local func_root_2 = nbp.Node:new("display_something", nbp.T_FUNCTION, 10, 0, nil)
     local const_root_1 = nbp.Node:new("DM_NONE", nbp.T_CONSTANT, 4, 0, nil)

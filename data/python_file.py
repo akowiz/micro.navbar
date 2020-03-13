@@ -9,10 +9,25 @@ def combine_data(x, y):
 
 def display_something():
 
-    def inner_function():
+    def inner_function1():
         pass
 
-    return ''
+    def inner_function2():
+
+        def inner_inner():
+            pass
+
+        return xxx
+
+    def inner_function3():
+        pass
+
+    return
+
+def zorglub():
+
+    def spirou():
+        pass
 
 thisismoot = 3
 
