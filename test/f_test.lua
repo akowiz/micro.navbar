@@ -70,16 +70,16 @@ function TestBuffer:test_can_display_python_structure()
     local class_root_2 = nbp.Node:new("Bar", nbp.T_CLASS, 29, 0, nil)
     local func_root_1 = nbp.Node:new("combine_data", nbp.T_FUNCTION, 7, 0, nil)
     local func_root_2 = nbp.Node:new("display_something", nbp.T_FUNCTION, 10, 0, nil)
-    local const_root_1 = nbp.Node:new("DEF_TITLE", nbp.T_CONSTANT, 4, 0, nil)
-    local const_root_2 = nbp.Node:new("DM_NONE", nbp.T_CONSTANT, 5, 0, nil)
+    local const_root_1 = nbp.Node:new("DM_NONE", nbp.T_CONSTANT, 4, 0, nil)
+    local const_root_2 = nbp.Node:new("DEF_TITLE", nbp.T_CONSTANT, 5, 0, nil)
 
     -- We expect the items to be sorted by name
-    -- lu.assertEquals(structure['classes'][1], class_root_2)
-    -- lu.assertEquals(structure['classes'][2], class_root_1)
-    -- lu.assertEquals(structure['functions'][1], func_root_1)
-    -- lu.assertEquals(structure['functions'][2], func_root_2)
-    -- lu.assertEquals(structure['constants'][1], const_root_1)
-    -- lu.assertEquals(structure['constants'][2], const_root_2)
+    lu.assertEquals(structure['classes'][1], class_root_2)
+    lu.assertEquals(structure['classes'][2], class_root_1)
+    lu.assertEquals(structure['functions'][1], func_root_1)
+    lu.assertEquals(structure['functions'][2], func_root_2)
+    lu.assertEquals(structure['constants'][1], const_root_2)
+    lu.assertEquals(structure['constants'][2], const_root_1)
 end
 
 -- class TestBuffer

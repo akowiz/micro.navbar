@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-DEF_TITLE = 'title'
 DM_NONE = 0
+DEF_TITLE = 'title'
 
 def combine_data(x, y):
     return x+y
