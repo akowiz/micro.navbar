@@ -5,7 +5,7 @@
 --------------------------------------------------------------------------------
 
 local lu = require('luaunit')
-local nb = require('navbar_python')
+local nbp = require('navbar_python')
 
 
 TestSplit = {}
@@ -23,11 +23,11 @@ end
 
 function TestSplit:test_split_properly()
     for k, test in pairs(self.tList) do
-        input = test[1]
-        sep = test[2]
-        nmax = test[3]
-        expected = test[4]
-        result = input:split(sep, nmax)
+        local input = test[1]
+        local sep = test[2]
+        local nmax = test[3]
+        local expected = test[4]
+        local result = input:split(sep, nmax)
         lu.assertEquals(expected, result)
     end
 end
