@@ -30,7 +30,7 @@ function TestSplit:test_split_properly()
         local nmax = test[3]
         local expected = test[4]
         local result = input:split(sep, nmax)
-        lu.assertEquals(expected, result)
+        lu.assertEquals(result, expected)
     end
 end
 -- class TestSplit
@@ -41,12 +41,26 @@ TestMatchPythonItem = {}    -- class
 
 function TestMatchPythonItem:setUp()
     self.pList = {
-        { 'CONST1=12', nbp.Node:new('CONST1', nbp.T_CONSTANT, 0) },
-        { "CONST2='abc'", nbp.Node:new('CONST2', nbp.T_CONSTANT, 0) },
-        { " CONST3='abc'", nil },
-        { "CONST4=='abc'", nil },
-        { "CONST5!='abc'", nil },
-        { "CONST6>='abc'", nil },
+        { 'CONST1=12',      nbp.Node:new('CONST1', nbp.T_CONSTANT, 0) },
+        { "CONST2='abc'",   nbp.Node:new('CONST2', nbp.T_CONSTANT, 0) },
+        { " CONST3='abc'",  nil },
+        { "CONST4=='abc'",  nil },
+        { "CONST5!='abc'",  nil },
+        { "CONST6>='abc'",  nil },
+
+        { 'class C1:',      nbp.Node:new('C1', nbp.T_CLASS, 0) },
+        { 'class C2(C1):',  nbp.Node:new('C2', nbp.T_CLASS, 0) },
+        { '  class C3:',    nbp.Node:new('C3', nbp.T_CLASS, 2) },
+        { '    class C4:',  nbp.Node:new('C4', nbp.T_CLASS, 4) },
+        { 'class C5',       nil },
+        { 'classC6',        nil },
+
+        { 'def F1():',      nbp.Node:new('F1', nbp.T_FUNCTION, 0) },
+        { '  def F2():',    nbp.Node:new('F2', nbp.T_FUNCTION, 2) },
+        { '    def F3():',  nbp.Node:new('F3', nbp.T_FUNCTION, 4) },
+        { 'def F4:',        nil },
+        { 'def F5',         nil },
+        { 'defF6',          nil },
     }
 end
 
