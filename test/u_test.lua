@@ -46,11 +46,11 @@ function TestNode:setUp()
     local childA = nbp.Node:new("Children A")
     local childB = nbp.Node:new("Children B")
 
-    table.insert(with_children.children, child1)
-    table.insert(with_children.children, child2)
-    table.insert(with_children.children, child3)
-    table.insert(child1.children, childA)
-    table.insert(child1.children, childB)
+    with_children:append(child1)
+    with_children:append(child2)
+    with_children:append(child3)
+    child1:append(childA)
+    child1:append(childB)
 
     self.nList = {
         no_children,
