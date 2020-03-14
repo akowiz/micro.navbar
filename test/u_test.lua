@@ -8,6 +8,8 @@ local lu = require('luaunit')
 local nbp = require('navbar_python')
 
 
+-------------------------------------------------------------------------------
+
 TestSplit = {} -- class
 
 function TestSplit:setUp()
@@ -32,6 +34,34 @@ function TestSplit:test_split_properly()
     end
 end
 -- class TestSplit
+
+-------------------------------------------------------------------------------
+
+TestMatchPythonItem = {}    -- class
+
+function TestMatchPythonItem:setUp()
+    self.pList = {
+        { 'CONST1=12', nbp.Node:new('CONST1', nbp.T_CONSTANT, 0) },
+        { "CONST2='abc'", nbp.Node:new('CONST2', nbp.T_CONSTANT, 0) },
+        { " CONST3='abc'", nil },
+        { "CONST4=='abc'", nil },
+        { "CONST5!='abc'", nil },
+        { "CONST6>='abc'", nil },
+    }
+end
+
+function TestMatchPythonItem:test_recognize_python()
+    for k, v in ipairs(self.pList) do
+        local str = v[1]
+        local expected = v[2]
+        local result = nbp.match_python_item(str)
+        lu.assertEquals(result, expected)
+    end
+end
+
+-- class TestMatchPythonItem
+
+-------------------------------------------------------------------------------
 
 TestNode = {}   -- class
 
@@ -88,7 +118,6 @@ function TestNode:test_count_children()
 end
 
 -- class TestNode
-
 
 
 --------------------------------------------------------------------------------
