@@ -53,7 +53,7 @@ end
 
 function TestBuffer:test_can_display_python_structure()
     -- Test that we can extract the python structure from a buffer containing python code.
-    local root = self.buffer:export_structure_python()
+    local root = nbp.export_structure_python(self.buffer)
 
     -- Sort the children ofroot
     table.sort(root.children)
