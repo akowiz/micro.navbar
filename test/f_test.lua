@@ -23,6 +23,11 @@ end
 
 
 
+-------------------------------------------------------------------------------
+-- Tests
+-------------------------------------------------------------------------------
+
+
 TestBuffer = {} --class
 
 function TestBuffer:setUp()
@@ -101,6 +106,7 @@ end
 
 -- class TestBuffer
 
+-------------------------------------------------------------------------------
 
 TestNode = {} -- class
 
@@ -113,10 +119,10 @@ function TestNode:test_can_save_node()
     -- Test that we can store a node information into an object.
 
     local node0 = nbp.Node:new()
-    lu.assertEquals(node0.kind, nbp.T_NONE)
     lu.assertEquals(node0.name, '')
-    lu.assertEquals(node0.line, 0)
+    lu.assertEquals(node0.kind, nbp.T_NONE)
     lu.assertEquals(node0.indent, 0)
+    lu.assertEquals(node0.line, 0)
     lu.assertEquals(node0.closed, false)
 
     local kind = nbp.T_CLASS
