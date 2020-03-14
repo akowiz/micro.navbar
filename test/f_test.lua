@@ -53,17 +53,34 @@ end
 
 function TestBuffer:test_can_display_python_structure()
     -- Test that we can extract the python structure from a buffer containing python code.
-    local structure = self.buffer:export_structure_python()
+    local root = self.buffer:export_structure_python()
+
+    -- Sort the children ofroot
+    table.sort(root.children)
+
+    local classes = {}
+    local functions = {}
+    local constants = {}
+
+    for k, v in ipairs(root.children) do
+        if v.kind == nbp.T_CLASS then
+            classes[#classes+1] = v
+        elseif v.kind == nbp.T_FUNCTION then
+            functions[#functions+1] = v
+        elseif v.kind == nbp.T_CONSTANT then
+            constants[#constants+1] = v
+        end
+    end
 
     -- We expect a table in return with data in it
-    lu.assertEvalToTrue(structure['classes'])
-    lu.assertEvalToTrue(structure['functions'])
-    lu.assertEvalToTrue(structure['constants'])
+    lu.assertEvalToTrue(classes)
+    lu.assertEvalToTrue(functions)
+    lu.assertEvalToTrue(constants)
 
     -- From our test files, there should be at least 1 element in each category.
-    lu.assertNotEquals(structure['classes'], {})
-    lu.assertNotEquals(structure['functions'], {})
-    lu.assertNotEquals(structure['constants'], {})
+    lu.assertNotEquals(classes, {})
+    lu.assertNotEquals(functions, {})
+    lu.assertNotEquals(constants, {})
 
     -- We expect the items in structure to be nodes
     local class_root_1 = nbp.Node:new("Foo", nbp.T_CLASS, 34, 0, nil)
@@ -74,12 +91,12 @@ function TestBuffer:test_can_display_python_structure()
     local const_root_2 = nbp.Node:new("DEF_TITLE", nbp.T_CONSTANT, 5, 0, nil)
 
     -- We expect the items to be sorted by name
-    lu.assertEquals(structure['classes'][1].name, class_root_2.name)
-    lu.assertEquals(structure['classes'][2].name, class_root_1.name)
-    lu.assertEquals(structure['functions'][1].name, func_root_1.name)
-    lu.assertEquals(structure['functions'][2].name, func_root_2.name)
-    lu.assertEquals(structure['constants'][1].name, const_root_2.name)
-    lu.assertEquals(structure['constants'][2].name, const_root_1.name)
+    lu.assertEquals(classes[1].name, class_root_2.name)
+    lu.assertEquals(classes[2].name, class_root_1.name)
+    lu.assertEquals(functions[1].name, func_root_1.name)
+    lu.assertEquals(functions[2].name, func_root_2.name)
+    lu.assertEquals(constants[1].name, const_root_2.name)
+    lu.assertEquals(constants[2].name, const_root_1.name)
 end
 
 -- class TestBuffer

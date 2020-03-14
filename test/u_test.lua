@@ -33,8 +33,7 @@ function TestSplit:test_split_properly()
 end
 -- class TestSplit
 
-
-TestNode = {} --  class
+TestNode = {}   -- class
 
 function TestNode:setUp()
     -- Set up our tests
