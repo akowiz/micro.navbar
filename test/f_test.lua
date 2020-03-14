@@ -74,12 +74,12 @@ function TestBuffer:test_can_display_python_structure()
     local const_root_2 = nbp.Node:new("DEF_TITLE", nbp.T_CONSTANT, 5, 0, nil)
 
     -- We expect the items to be sorted by name
-    lu.assertEquals(structure['classes'][1], class_root_2)
-    lu.assertEquals(structure['classes'][2], class_root_1)
-    lu.assertEquals(structure['functions'][1], func_root_1)
-    lu.assertEquals(structure['functions'][2], func_root_2)
-    lu.assertEquals(structure['constants'][1], const_root_2)
-    lu.assertEquals(structure['constants'][2], const_root_1)
+    lu.assertEquals(structure['classes'][1].name, class_root_2.name)
+    lu.assertEquals(structure['classes'][2].name, class_root_1.name)
+    lu.assertEquals(structure['functions'][1].name, func_root_1.name)
+    lu.assertEquals(structure['functions'][2].name, func_root_2.name)
+    lu.assertEquals(structure['constants'][1].name, const_root_2.name)
+    lu.assertEquals(structure['constants'][2].name, const_root_1.name)
 end
 
 -- class TestBuffer
