@@ -83,12 +83,12 @@ function TestBuffer:test_can_display_python_structure()
     lu.assertNotEquals(constants, {})
 
     -- We expect the items in structure to be nodes
-    local class_root_1 = nbp.Node:new("Foo", nbp.T_CLASS, 34, 0, nil)
-    local class_root_2 = nbp.Node:new("Bar", nbp.T_CLASS, 44, 0, nil)
-    local func_root_1 = nbp.Node:new("combine_data", nbp.T_FUNCTION, 7, 0, nil)
-    local func_root_2 = nbp.Node:new("display_something", nbp.T_FUNCTION, 10, 0, nil)
-    local const_root_1 = nbp.Node:new("DM_NONE", nbp.T_CONSTANT, 4, 0, nil)
-    local const_root_2 = nbp.Node:new("DEF_TITLE", nbp.T_CONSTANT, 5, 0, nil)
+    local class_root_1 = nbp.Node:new("Foo", nbp.T_CLASS, 0, 34, nil)
+    local class_root_2 = nbp.Node:new("Bar", nbp.T_CLASS, 0, 44, nil)
+    local func_root_1 = nbp.Node:new("combine_data", nbp.T_FUNCTION, 0, 7, nil)
+    local func_root_2 = nbp.Node:new("display_something", nbp.T_FUNCTION, 0, 10, nil)
+    local const_root_1 = nbp.Node:new("DM_NONE", nbp.T_CONSTANT, 0, 4, nil)
+    local const_root_2 = nbp.Node:new("DEF_TITLE", nbp.T_CONSTANT, 0, 5, nil)
 
     -- We expect the items to be sorted by name
     lu.assertEquals(classes[1].name, class_root_2.name)
@@ -117,20 +117,20 @@ function TestNode:test_can_save_node()
     lu.assertEquals(node0.name, '')
     lu.assertEquals(node0.line, 0)
     lu.assertEquals(node0.indent, 0)
-    lu.assertEquals(node0.parent, nil)
+    lu.assertEquals(node0.closed, false)
 
     local kind = nbp.T_CLASS
     local name = "TestClass"
     local line = 10
     local indent = 4
-    local parent = nil
+    local closed = true
 
-    local node1 = nbp.Node:new(name, kind, line, indent, parent)
+    local node1 = nbp.Node:new(name, kind, indent, line, closed)
     lu.assertEquals(node1.kind, kind)
     lu.assertEquals(node1.name, name)
     lu.assertEquals(node1.line, line)
     lu.assertEquals(node1.indent, indent)
-    lu.assertEquals(node1.parent, parent)
+    lu.assertEquals(node1.closed, closed)
 end
 
 -- class TestNode
