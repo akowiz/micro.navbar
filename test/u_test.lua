@@ -98,6 +98,7 @@ function TestNode:setUp()
 
     self.nList = {
         empty =         nbp.Node:new(),
+        root =          nbp.Node:new(nbp.ROOT),
         simple =        nbp.Node:new("Simple", nbp.T_CLASS, 4, 42, true),
         no_children =   no_children,
         with_children = with_children,
@@ -154,6 +155,34 @@ function TestNode:test_count_children()
 
     local child1 = self.nList['child1'].children
     lu.assertEquals(#child1, 2)
+end
+
+function TestNode:test_display_tree()
+    local node
+
+    -- An empty node return '  ' = lead + space + name (lead = ' ', name='')
+    node = self.nList['empty']
+    lu.assertEquals(node:tree(),  '. ')
+
+    -- The root node return '/' because it is a special case.
+    node = self.nList['root']
+    lu.assertEquals(node:tree(), nbp.ROOT)
+
+    -- A single node without children return the name of the node with some
+    -- indent.
+    node = self.nList['simple']
+    lu.assertEquals(node:tree(), '. Simple')
+
+    -- A node with children returns the tree properly indented, the lead
+    -- character is 'v' for open node and '>' for closed nodes.
+    node = self.nList['child1']
+    lu.assertEquals(node:tree(), 'v Children 1 with Children\n  . Children A\n  . Children B')
+
+    -- a node with children and children have children too
+    node = self.nList['with_children']
+    local treestr = 'v With children\n  v Children 1 with Children\n    . Children A\n    . Children B\n  . Children 2\n  . Children 3'
+    lu.assertEquals(node:tree(), treestr)
+
 end
 
 -- class TestNode
