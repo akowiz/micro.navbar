@@ -125,20 +125,17 @@ end
 function TestNode:test_can_display_node()
     -- Test that we can display a node and its children into a tree (string).
 
-    -- An empty node return '  ' = lead + space + name (lead = ' ', name='')
-    lu.assertEquals(self.node0:tree(),  '  ')
-
     -- The root node return '/' because it is a special case.
     lu.assertEquals(self.root1:tree(), nbp.ROOT)
 
     -- A single node without children return the name of the node with some
     -- indent.
-    lu.assertEquals(self.node1:tree(), '  TestClass')
-    lu.assertEquals(self.node2:tree(), '  TestFunc')
+    lu.assertEquals(self.node1:tree(), '. TestClass')
+    lu.assertEquals(self.node2:tree(), '. TestFunc')
 
     -- A node with children returns the tree properly indented, the lead
     -- character is 'v' for open node and '>' for closed nodes.
-    lu.assertEquals(self.root2:tree(), '/\nv TestClass\n    TestFunc')
+    lu.assertEquals(self.root2:tree(), '/\nv TestClass\n  . TestFunc')
 end
 
 -- class TestNode
