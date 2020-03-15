@@ -180,7 +180,7 @@ function TestNode:test_display_tree()
 
     -- a node with children and children have children too
     node = self.nList['with_children']
-    local treestr = 'v With children\n  v Children 1 with Children\n    . Children A\n    . Children B\n  . Children 2\n  . Children 3'
+    local treestr = 'v With Children\n  v Children 1 with Children\n    . Children A\n    . Children B\n  . Children 2\n  . Children 3'
     lu.assertEquals(node:tree(), treestr)
 
 end
