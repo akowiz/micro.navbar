@@ -135,7 +135,7 @@ function TestNode:test_can_display_node()
 
     -- A node with children returns the tree properly indented, the lead
     -- character is 'v' for open node and '>' for closed nodes.
-    lu.assertEquals(self.root2:tree(), '/\nv TestClass\n  . TestFunc')
+    lu.assertEquals(self.root2:tree(), '/\n  v TestClass\n    . TestFunc')
 end
 
 -- class TestNode
