@@ -22,11 +22,9 @@ local function buffer_from_file(path)
 end
 
 
-
 -------------------------------------------------------------------------------
 -- Tests
 -------------------------------------------------------------------------------
-
 
 TestBuffer = {} --class
 
@@ -111,37 +109,39 @@ end
 TestNode = {} -- class
 
 function TestNode:setUp()
-    -- Set-up function for our tests.
+    -- Setup function for our tests.
+    self.node0 = nbp.Node:new()
+    self.node1 = nbp.Node:new('TestClass', nbp.T_CLASS,     4, 10, true)
+    self.node2 = nbp.Node:new('TestFunc',  nbp.T_FUNCTION,  4, 20)
+    self.root1 = nbp.Node:new(nbp.ROOT)
 
+    local n1 = nbp.Node:new('TestClass', nbp.T_CLASS,    4, 10)
+    local n2 = nbp.Node:new('TestFunc',  nbp.T_FUNCTION, 4)
+    self.root2 = nbp.Node:new(nbp.ROOT)
+    self.root2:append(n1)
+    n1:append(n2)
 end
 
-function TestNode:test_can_save_node()
-    -- Test that we can store a node information into an object.
+function TestNode:test_can_display_node()
+    -- Test that we can display a node and its children into a tree (string).
 
-    local node0 = nbp.Node:new()
-    lu.assertEquals(node0.name, '')
-    lu.assertEquals(node0.kind, nbp.T_NONE)
-    lu.assertEquals(node0.indent, 0)
-    lu.assertEquals(node0.line, 0)
-    lu.assertEquals(node0.closed, false)
+    -- An empty node return '  ' = lead + space + name (lead = ' ', name='')
+    lu.assertEquals(self.node0:tree(),  '  ')
 
-    local kind = nbp.T_CLASS
-    local name = "TestClass"
-    local line = 10
-    local indent = 4
-    local closed = true
+    -- The root node return '/' because it is a special case.
+    lu.assertEquals(self.root1:tree(), nbp.ROOT)
 
-    local node1 = nbp.Node:new(name, kind, indent, line, closed)
-    lu.assertEquals(node1.kind, kind)
-    lu.assertEquals(node1.name, name)
-    lu.assertEquals(node1.line, line)
-    lu.assertEquals(node1.indent, indent)
-    lu.assertEquals(node1.closed, closed)
+    -- A single node without children return the name of the node with some
+    -- indent.
+    lu.assertEquals(self.node1:tree(), '  TestClass')
+    lu.assertEquals(self.node2:tree(), '  TestFunc')
+
+    -- A node with children returns the tree properly indented, the lead
+    -- character is 'v' for open node and '>' for closed nodes.
+    lu.assertEquals(self.root2:tree(), '/\nv TestClass\n    TestFunc')
 end
 
 -- class TestNode
-
-
 
 
 --------------------------------------------------------------------------------
