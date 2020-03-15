@@ -33,6 +33,7 @@ function TestSplit:test_split_properly()
         lu.assertEquals(result, expected)
     end
 end
+
 -- class TestSplit
 
 -------------------------------------------------------------------------------
@@ -96,14 +97,38 @@ function TestNode:setUp()
     child1:append(childB)
 
     self.nList = {
-        no_children,
-        with_children,
-        child1,
-        child2,
-        child3,
-        childA,
-        childB,
+        empty =         nbp.Node:new(),
+        simple =        nbp.Node:new("Simple", nbp.T_CLASS, 4, 42, true),
+        no_children =   no_children,
+        with_children = with_children,
+        child1 =        child1,
+        child2 =        child2,
+        child3 =        child3,
+        childA =        childA,
+        childB =        childB,
     }
+end
+
+function TestNode:test_default()
+    local node = self.nList['empty']
+    assert(node.name == '', 'name not empty')
+    assert(node.indent == 0, 'indent not 0')
+    assert(node.kind == nbp.T_NONE, 'kind not T_NONE')
+    assert(node.line == 0, 'line not 0')
+    assert(node.closed == false, 'closed not false')
+    assert(nbp.isempty(node.children), 'children not empty')
+    assert(node.parent == nil, 'parent not nil')
+end
+
+function TestNode:test_simple()
+    local node = self.nList['simple']
+    assert(node.name == 'Simple', 'wrong name')
+    assert(node.indent == 4, 'wrong indent')
+    assert(node.kind == nbp.T_CLASS, 'wrong kind')
+    assert(node.line == 42, 'wrong line')
+    assert(node.closed == true, 'wrong closed')
+    assert(nbp.isempty(node.children), 'wrong children')
+    assert(node.parent == nil, 'wrong parent')
 end
 
 function TestNode:test_append_child()
@@ -121,18 +146,17 @@ function TestNode:test_append_child()
 end
 
 function TestNode:test_count_children()
-    local no_children = self.nList[1].children
+    local no_children = self.nList['no_children'].children
     lu.assertEquals(#no_children, 0)
 
-    local with_children = self.nList[2].children
+    local with_children = self.nList['with_children'].children
     lu.assertEquals(#with_children, 3)
 
-    local child1 = self.nList[3].children
+    local child1 = self.nList['child1'].children
     lu.assertEquals(#child1, 2)
 end
 
 -- class TestNode
-
 
 --------------------------------------------------------------------------------
 -- Running the test
