@@ -12,6 +12,8 @@ nbp.T_CONSTANT = 3
 nbp.ROOT = '/'
 nbp.STEP = 2
 
+nbp.DEBUG = true
+
 
 -------------------------------------------------------------------------------
 -- Helper Functions
@@ -44,12 +46,10 @@ function string:split(sSeparator, nMax, bRegexp)
    return aRecord
 end
 
--- Return true if table == {}, false otherwise
 function nbp.isempty(table)
     return next(table) == nil
 end
 
--- Convert nbp.T_XXX into human readeable string
 function nbp.kind_to_str(kind)
     local ret = 'None'
     if kind == nbp.T_CLASS then
@@ -62,8 +62,6 @@ function nbp.kind_to_str(kind)
     return ret
 end
 
--- Test a string and attempt to extract a python item (class, function,
--- variable). If found, return the corresponding Node object, else nil.
 function nbp.match_python_item(line)
     local indent = 0
     local name
@@ -102,7 +100,6 @@ function nbp.match_python_item(line)
     return ret
 end
 
-
 -------------------------------------------------------------------------------
 -- Data Structures
 -------------------------------------------------------------------------------
@@ -129,20 +126,26 @@ function nbp.Node:new(n, k, i, l, c)
 end
 
 function nbp.Node:__lt(node)
-    -- Allow us to sort the nodes by kind, and then by name
+    -- allow us to sort the nodes by kind, and then by name
     return (self.kind < node.kind) or ((self.kind == node.kind) and (self.name < node.name))
 end
 
 function nbp.Node:__repr()
-    -- Allow us to display the nodes in a readable way.
+    -- allow us to display the nodes in a readable way.
     return 'Node(' .. table.concat({self.kind, self.name, self.line, self.indent}, ', ') .. ')'
 end
 
 function nbp.Node:__tostring()
+    -- method to display the current object as a string
     return self:__repr()
 end
 
 function nbp.Node:append(node)
+    -- append node as a children of the current object.
+    if nbp.DEBUG then
+        local kind = nbp.kind_to_str(node.kind)
+        print(kind .. ' ' .. tostring(node) .. ' added to ' .. tostring(self))
+    end
     node.parent = self
     table.insert(self.children, node)
 end
@@ -152,7 +155,7 @@ function nbp.tree_style(stylename)
     if     stylename == 'bare' then
         ret['last_item'] = ' '
         ret['default'] = ' '
-        ret['item_single'] = '.'
+        ret['item_single'] = ' '
         ret['item_open'] = 'v'
         ret['item_closed'] = '>'
 
@@ -174,26 +177,8 @@ function nbp.tree_style(stylename)
     return ret
 end
 
---[[ Function to display a node and its children in a recursive way.
-
-Notes: You do not need to call this function directly, instead you should just
-use Node:tree().
-
-Parameters
-----------
-    style : table
-        A table containing the style to use.
-    indent : int
-        The number of characters to use as leading indent.
-    last : bool
-        True if the current item is the last children of the paren node.
-
-Returns
--------
-    string
-        The tree of the node and its children in a string.
---]]
 function nbp.Node:tree_recurse(style, indent, last)
+    -- method to display the current node and its children as a string.
     local lead = style['item_single']
     local name
     local names = {}
@@ -226,25 +211,13 @@ function nbp.Node:tree_recurse(style, indent, last)
     return table.concat(names, "\n")
 end
 
---[[ Function to display a node and its children.
-
-
-Parameters
-----------
-    style : string
-        The style to use (one of 'bare', 'ascii', 'box') to display the tree.
-
-Returns
--------
-    string
-        The tree of the node and its children in a string.
---]]
 function nbp.Node:tree(style)
     style = style or 'bare'
     style = nbp.tree_style(style)
     return self:tree_recurse(style, 0, false)
 end
 
+-- Node Class
 
 -------------------------------------------------------------------------------
 -- Main Functions
@@ -252,46 +225,93 @@ end
 
 -- Export the python structure of a buffer containing python code
 function nbp.export_structure_python(str)
-    local root = nbp.Node:new('Root')
+    local root = nbp.Node:new(nbp.ROOT) -- root of our tree
 
-    local parents = { [0] = nil }   -- table of parents indexed by indent
+    local parents = {}                  -- table of parents indexed by indent
+    local parent = nil                  -- the active parent
+    local current_indent = 0            -- the current indent
 
     -- Extract structure from the buffer
 
     local lines = str:split('\n')
     for nb, line in ipairs(lines) do
-
-        local indent, name = string.match(line, "^(%s*)class%s*([_%a]-)%s*[(:]")
+        -- print(nb, line)
+        local indent, name = string.match(line, "^(%s*)class%s*([_%a%d]-)%s*[(:]")
         if name then
-            if (indent == '') or (indent == 0) then
-                node = nbp.Node:new(name, nbp.T_CLASS, nb, indent:len())
-                root:append(node)
+            indent = indent:len()
+            local node = nbp.Node:new(name, nbp.T_CLASS, indent, nb)
+            -- print("cin: "..current_indent.." in: "..indent.." node: "..tostring(node))
+            if (indent == current_indent) then
+                -- We use the same parent as previously
+                if (indent == 0) then
+                    root:append(node)
+                else
+                    parent:append(node)
+                end
+            elseif (indent > current_indent) then
+                -- Leaving current parent
+                parent = parents[current_indent]
+                parent:append(node)
+                current_indent = indent
             else
-                -- print("Ignore class "..name)
-                -- print("indent = "..tostring(indent))
-                -- We ignore the classes defined inside other items for the moment.
+                -- Leaving current parent
+                if (indent == 0) then
+                    root:append(node)
+                    parent = nil
+                else
+                    parent = parents[indent].parent
+                    parent:append(node)
+                end
+                current_indent = indent
             end
+            -- We update the current parent for this level
+            parents[indent] = node
+            goto continue
         end
 
-        local indent, name = string.match(line, "^(%s*)def%s*([_%a]-)%s*%(")
+        local indent, name = string.match(line, "^(%s*)def%s*([_%a%d]-)%s*%(")
         if name then
-            if (indent == '') or (indent == 0) then
-                node = nbp.Node:new(name, nbp.T_FUNCTION, nb, indent:len())
-                root:append(node)
+            indent = indent:len()
+            local node = nbp.Node:new(name, nbp.T_FUNCTION, indent, nb)
+            -- print("cin: "..current_indent.." in: "..indent.." node: "..tostring(node))
+
+            if (indent == current_indent) then
+                -- We use the same parent as previously
+                if (indent == 0) then
+                    root:append(node)
+                else
+                    node.parent = parent
+                    parent:append(node)
+                end
+            elseif (indent > current_indent) then
+                parent = parents[current_indent]
+                parent:append(node)
+                current_indent = indent
             else
-                -- print("Ignore function "..name)
-                -- print("indent = "..tostring(indent))
-                -- We ignore the functions defined inside other items for the moment.
+                -- Leaving current parent
+                if (indent == 0) then
+                    root:append(node)
+                    parent = nil
+                else
+                    parent = parents[indent].parent
+                    parent:append(node)
+                end
+                current_indent = indent
             end
+            parents[indent] = node
+            goto continue
         end
 
-        local name = string.match(line, "^([_%a]-)%s*=[^=]")
+        local name = string.match(line, "^([_%a%d]-)%s*=[^=]")
         if name then
             -- Notes: we only considers constants with indent of 0
-            node = nbp.Node:new(name, nbp.T_CONSTANT, nb, 0)
+            local indent = 0
+            local node = nbp.Node:new(name, nbp.T_CONSTANT, indent, nb)
+            -- print("cin: "..current_indent.." in: "..indent.." node: "..tostring(node))
             root:append(node)
         end
 
+        ::continue::
     end
 
     return root
