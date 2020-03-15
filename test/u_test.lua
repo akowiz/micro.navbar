@@ -159,6 +159,7 @@ end
 
 function TestNode:test_display_tree()
     local node
+    local treestr
 
     -- An empty node return '  ' = lead + space + name (lead = ' ', name='')
     node = self.nList['empty']
@@ -180,8 +181,13 @@ function TestNode:test_display_tree()
 
     -- a node with children and children have children too
     node = self.nList['with_children']
-    local treestr = 'v With Children\n  v Children 1 with Children\n    . Children A\n    . Children B\n  . Children 2\n  . Children 3'
-    lu.assertEquals(node:tree(), treestr)
+    treestr = 'v With Children\n  v Children 1 with Children\n    . Children A\n    . Children B\n  . Children 2\n  . Children 3'
+    lu.assertEquals(node:tree('bare'), treestr)
+
+    treestr = 'v With Children\n  v Children 1 with Children\n  | + Children A\n  | L Children B\n  + Children 2\n  L Children 3'
+    lu.assertEquals(node:tree('ascii'), treestr)
+
+    print('\n'..node:tree('ascii')..'\n')
 
 end
 
