@@ -90,6 +90,12 @@ function TestNode:setUp()
     local childA = nbp.Node:new("Children A")
     local childB = nbp.Node:new("Children B")
 
+    local linear = nbp.Node:new(nbp.ROOT)
+    local linear1 = nbp.Node:new('Path1')
+    linear:append(linear1)
+    local linear2 = nbp.Node:new('Path2')
+    linear1:append(linear2)
+
     with_children:append(child1)
     with_children:append(child2)
     with_children:append(child3)
@@ -102,6 +108,7 @@ function TestNode:setUp()
         simple =        nbp.Node:new("Simple", nbp.T_CLASS, 4, 42, true),
         no_children =   no_children,
         with_children = with_children,
+        linear =        linear,
         child1 =        child1,
         child2 =        child2,
         child3 =        child3,
@@ -191,18 +198,22 @@ function TestNode:test_display_tree()
 
     -- A node with children and some children have children too.
     node = self.nList['with_children']
-    treestr1 = 'v With Children\n  v Children 1 with Children\n    . Children A\n    . Children B\n  . Children 2\n  . Children 3'
-    lu.assertEquals(node:tree2('bare', 0), treestr1)
+    treestr = 'v With Children\n  v Children 1 with Children\n    . Children A\n    . Children B\n  . Children 2\n  . Children 3'
+    lu.assertEquals(node:tree2('bare', 0), treestr)
     -- If hide_me is set to true, returns only the chidren.
-    treestr2 = 'v Children 1 with Children\n  . Children A\n  . Children B\n. Children 2\n. Children 3'
-    lu.assertEquals(node:tree2('bare', 0, true), treestr2)
+    treestr = 'v Children 1 with Children\n  . Children A\n  . Children B\n. Children 2\n. Children 3'
+    lu.assertEquals(node:tree2('bare', 0, true), treestr)
 
     -- A node with children and some children have children too.
-    treestr_ascii = '- With Children\n  - Children 1 with Children\n  | . Children A\n  | L Children B\n  . Children 2\n  L Children 3'
-    lu.assertEquals(node:tree2('ascii'), treestr_ascii)
+    treestr = '- With Children\n  - Children 1 with Children\n  | . Children A\n  | L Children B\n  . Children 2\n  L Children 3'
+    lu.assertEquals(node:tree2('ascii'), treestr)
 
-    treestr_box = '└ With Children\n  ├ Children 1 with Children\n  │ ├ Children A\n  │ └ Children B\n  ├ Children 2\n  └ Children 3'
-    lu.assertEquals(node:tree2('box'), treestr_box)
+    treestr = '└ With Children\n  ├ Children 1 with Children\n  │ ├ Children A\n  │ └ Children B\n  ├ Children 2\n  └ Children 3'
+    lu.assertEquals(node:tree2('box'), treestr)
+
+    node = self.nList['linear']
+    treestr = '└ /\n  └ Path1\n    └ Path2'
+    lu.assertEquals(node:tree2('box'), treestr)
 end
 
 -- class TestNode
