@@ -196,6 +196,11 @@ function TestNode:test_display_tree()
     -- If hide_me is set to true, returns only the chidren.
     lu.assertEquals(node:tree2('bare', 0, true), '. Children A\n. Children B')
 
+    -- A node with a single child, which has a single child
+    node = self.nList['linear']
+    treestr = 'v /\n  v Path1\n    . Path2'
+    lu.assertEquals(node:tree2('bare', 0), treestr)
+
     -- A node with children and some children have children too.
     node = self.nList['with_children']
     treestr = 'v With Children\n  v Children 1 with Children\n    . Children A\n    . Children B\n  . Children 2\n  . Children 3'
@@ -211,9 +216,6 @@ function TestNode:test_display_tree()
     treestr = '└ With Children\n  ├ Children 1 with Children\n  │ ├ Children A\n  │ └ Children B\n  ├ Children 2\n  └ Children 3'
     lu.assertEquals(node:tree2('box'), treestr)
 
-    node = self.nList['linear']
-    treestr = '└ /\n  └ Path1\n    └ Path2'
-    lu.assertEquals(node:tree2('box'), treestr)
 end
 
 -- class TestNode
