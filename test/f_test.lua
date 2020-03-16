@@ -7,6 +7,7 @@
 local lu = require('luaunit')
 local nbp = require('navbar_python')
 
+local DEBUG = true
 
 -------------------------------------------------------------------------------
 -- Helper Functions
@@ -42,11 +43,11 @@ function TestBuffer:test_can_display_buffer_by_lines()
     -- Split the content of the buffer into lines to be processed later.
     local lines = self.buffer:split("\n")
     assert(lines ~= nil)
---[[
-    for n, line in ipairs(lines) do
-        print(line)
-    end
---]]
+
+    -- for n, line in ipairs(lines) do
+        -- print(line)
+    -- end
+
     -- Rebuild the buffer using the lines
     local rebuild = table.concat(lines, '\n')
 
@@ -61,29 +62,29 @@ function TestBuffer:test_can_display_python_structure()
     -- Sort the children ofroot
     table.sort(root.children)
 
-    local classes = {}
-    local functions = {}
-    local constants = {}
+    local classes = nbp.Node:new('Classes')
+    local functions = nbp.Node:new('Functions')
+    local variables = nbp.Node:new('Variables')
 
     for k, v in ipairs(root.children) do
         if v.kind == nbp.T_CLASS then
-            classes[#classes+1] = v
+            classes:append(v)
         elseif v.kind == nbp.T_FUNCTION then
-            functions[#functions+1] = v
+            functions:append(v)
         elseif v.kind == nbp.T_CONSTANT then
-            constants[#constants+1] = v
+            variables:append(v)
         end
     end
 
     -- We expect a table in return with data in it
     lu.assertEvalToTrue(classes)
     lu.assertEvalToTrue(functions)
-    lu.assertEvalToTrue(constants)
+    lu.assertEvalToTrue(variables)
 
     -- From our test files, there should be at least 1 element in each category.
-    lu.assertNotEquals(classes, {})
-    lu.assertNotEquals(functions, {})
-    lu.assertNotEquals(constants, {})
+    -- lu.assertNotEquals(nbp.isempty(classes.children), false)
+    -- lu.assertNotEquals(nbp.isempty(functions.children), false)
+    -- lu.assertNotEquals(nbp.isempty(variables.children), false)
 
     -- We expect the items in structure to be nodes
     local class_root_1 = nbp.Node:new("Foo", nbp.T_CLASS, 0, 34, nil)
@@ -94,12 +95,19 @@ function TestBuffer:test_can_display_python_structure()
     local const_root_2 = nbp.Node:new("DEF_TITLE", nbp.T_CONSTANT, 0, 5, nil)
 
     -- We expect the items to be sorted by name
-    lu.assertEquals(classes[1].name, class_root_2.name)
-    lu.assertEquals(classes[2].name, class_root_1.name)
-    lu.assertEquals(functions[1].name, func_root_1.name)
-    lu.assertEquals(functions[2].name, func_root_2.name)
-    lu.assertEquals(constants[1].name, const_root_2.name)
-    lu.assertEquals(constants[2].name, const_root_1.name)
+    lu.assertEquals(classes.children[1].name, class_root_2.name)
+    lu.assertEquals(classes.children[2].name, class_root_1.name)
+    lu.assertEquals(functions.children[1].name, func_root_1.name)
+    lu.assertEquals(functions.children[2].name, func_root_2.name)
+    lu.assertEquals(variables.children[1].name, const_root_2.name)
+    lu.assertEquals(variables.children[2].name, const_root_1.name)
+
+    if DEBUG then
+        print('\n' .. classes:tree('box'))
+        print('\n' .. functions:tree('box'))
+        print('\n' .. variables:tree('box'))
+        print()
+    end
 end
 
 -- class TestBuffer
