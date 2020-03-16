@@ -159,36 +159,50 @@ end
 
 function TestNode:test_display_tree()
     local node
+    local root
     local treestr
 
-    -- An empty node return '  ' = lead + space + name (lead = ' ', name='')
+    -- An empty node returns '  ' = lead .. repeat*spacing .. space .. name
+    -- with lead = ' ', repeat='', name=''
     node = self.nList['empty']
-    lu.assertEquals(node:tree(),  '. ')
+    lu.assertEquals(node:tree2('bare', 0),  '. ')
+    -- If hide_me is set to true, returns ''
+    lu.assertEquals(node:tree2('bare', 0, true), '')
 
-    -- The root node return '/' because it is a special case.
+    -- A root without children returns '. /'
     node = self.nList['root']
-    lu.assertEquals(node:tree(), nbp.ROOT)
+    lu.assertEquals(node:tree2('bare', 0), '. ' .. nbp.ROOT)
+    -- If hide_me is set to true, returns ''
+    lu.assertEquals(node:tree2('bare', 0, true), '')
 
     -- A single node without children return the name of the node with some
     -- indent.
     node = self.nList['simple']
-    lu.assertEquals(node:tree(), '. Simple')
+    lu.assertEquals(node:tree2('bare', 0), '. Simple')
+    -- If hide_me is set to true, returns ''
+    lu.assertEquals(node:tree2('bare', 0, true), '')
 
     -- A node with children returns the tree properly indented, the lead
     -- character is 'v' for open node and '>' for closed nodes.
     node = self.nList['child1']
-    lu.assertEquals(node:tree(), 'v Children 1 with Children\n  . Children A\n  . Children B')
+    lu.assertEquals(node:tree2('bare', 0), 'v Children 1 with Children\n  . Children A\n  . Children B')
+    -- If hide_me is set to true, returns only the chidren.
+    lu.assertEquals(node:tree2('bare', 0, true), '. Children A\n. Children B')
 
-    -- a node with children and children have children too
+    -- A node with children and some children have children too.
     node = self.nList['with_children']
-    treestr = 'v With Children\n  v Children 1 with Children\n    . Children A\n    . Children B\n  . Children 2\n  . Children 3'
-    lu.assertEquals(node:tree('bare'), treestr)
+    treestr1 = 'v With Children\n  v Children 1 with Children\n    . Children A\n    . Children B\n  . Children 2\n  . Children 3'
+    lu.assertEquals(node:tree2('bare', 0), treestr1)
+    -- If hide_me is set to true, returns only the chidren.
+    treestr2 = 'v Children 1 with Children\n  . Children A\n  . Children B\n. Children 2\n. Children 3'
+    lu.assertEquals(node:tree2('bare', 0, true), treestr2)
 
-    treestr = 'v With Children\n  v Children 1 with Children\n  | + Children A\n  | L Children B\n  + Children 2\n  L Children 3'
-    lu.assertEquals(node:tree('ascii'), treestr)
+    -- A node with children and some children have children too.
+    treestr_ascii = '- With Children\n  - Children 1 with Children\n  | . Children A\n  | L Children B\n  . Children 2\n  L Children 3'
+    lu.assertEquals(node:tree2('ascii'), treestr_ascii)
 
-    print('\n'..node:tree('ascii')..'\n')
-
+    treestr_box = '└ With Children\n  ├ Children 1 with Children\n  │ ├ Children A\n  │ └ Children B\n  ├ Children 2\n  └ Children 3'
+    lu.assertEquals(node:tree2('box'), treestr_box)
 end
 
 -- class TestNode
