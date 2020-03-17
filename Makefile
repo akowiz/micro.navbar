@@ -18,7 +18,12 @@ help:
 	@echo
 	@echo "clear:   clear the terminal."
 	@echo
+	@echo "doc: 	build the documentation."
+	@echo
 	@echo "push:    push repository on server with git push and git push --tags."
+
+ldoc:
+	ldoc -q -p 'micro_navbar' -d doc navbar/generic.lua
 
 clear:
 	clear
