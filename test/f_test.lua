@@ -4,7 +4,8 @@
 -- Main Functional Test Script
 --------------------------------------------------------------------------------
 
-local lu = require('luaunit')
+local lu  = require('luaunit')
+local gen = require('generic')
 local nbp = require('navbar_python')
 
 local DEBUG = false
@@ -82,9 +83,9 @@ function TestBuffer:test_can_display_python_structure()
     lu.assertEvalToTrue(variables)
 
     -- From our test files, there should be at least 1 element in each category.
-    -- lu.assertNotEquals(nbp.isempty(classes.children), false)
-    -- lu.assertNotEquals(nbp.isempty(functions.children), false)
-    -- lu.assertNotEquals(nbp.isempty(variables.children), false)
+    -- lu.assertNotEquals(gen.isempty(classes.children), false)
+    -- lu.assertNotEquals(gen.isempty(functions.children), false)
+    -- lu.assertNotEquals(gen.isempty(variables.children), false)
 
     -- We expect the items in structure to be nodes
     local class_root_1 = nbp.Node:new("Foo", nbp.T_CLASS, 0, 34, nil)

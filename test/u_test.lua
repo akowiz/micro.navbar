@@ -4,9 +4,9 @@
 -- Main Unit Test Script
 --------------------------------------------------------------------------------
 
-local lu = require('luaunit')
+local lu  = require('luaunit')
 local nbp = require('navbar_python')
-
+local gen = require('generic')
 
 -------------------------------------------------------------------------------
 
@@ -124,7 +124,7 @@ function TestNode:test_default()
     assert(node.kind == nbp.T_NONE, 'kind not T_NONE')
     assert(node.line == 0, 'line not 0')
     assert(node.closed == false, 'closed not false')
-    assert(nbp.isempty(node.children), 'children not empty')
+    assert(gen.isempty(node.children), 'children not empty')
     assert(node.parent == nil, 'parent not nil')
 end
 
@@ -135,7 +135,7 @@ function TestNode:test_simple()
     assert(node.kind == nbp.T_CLASS, 'wrong kind')
     assert(node.line == 42, 'wrong line')
     assert(node.closed == true, 'wrong closed')
-    assert(nbp.isempty(node.children), 'wrong children')
+    assert(gen.isempty(node.children), 'wrong children')
     assert(node.parent == nil, 'wrong parent')
 end
 
