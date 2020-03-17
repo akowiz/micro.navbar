@@ -4,6 +4,8 @@
 -- Main Functional Test Script
 --------------------------------------------------------------------------------
 
+package.path = "navbar/?.lua;" .. package.path
+
 local lu  = require('luaunit')
 local gen = require('generic')
 local nbp = require('navbar_python')
