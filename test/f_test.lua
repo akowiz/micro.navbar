@@ -36,7 +36,7 @@ function TestBuffer:setUp()
     -- Set-up function for our tests.
 
     -- Read the content of our buffer from a file
-    self.buffer = buffer_from_file('../data/python_file.py')
+    self.buffer = buffer_from_file('data/python_file.py')
     assert(#self.buffer > 0)
 end
 
