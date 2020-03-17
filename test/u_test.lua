@@ -7,8 +7,8 @@
 package.path = "navbar/?.lua;" .. package.path
 
 local lu  = require('luaunit')
-local nbp = require('navbar_python')
 local gen = require('generic')
+local nbp = require('lang_python')
 
 -------------------------------------------------------------------------------
 
