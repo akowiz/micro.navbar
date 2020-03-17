@@ -1,5 +1,5 @@
 support/
-
+doc/
 test/luaunit.lua
 test/generic.lua
 test/old_test.lua
