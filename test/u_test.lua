@@ -226,6 +226,58 @@ end
 
 -- class TestNode
 
+-------------------------------------------------------------------------------
+
+TestBuffer = {}   -- class
+
+function TestBuffer:setUp()
+    -- Set up our tests
+    self.bList = {}
+
+    self.bList['classes_only'] = 'class A:\n\n\tclass B_inner:\n\nclass D(A):\n\nclass C(A):\n\nclass L:\n'
+    self.bList['functions_only'] = 'def F3(c):\n\ndef F4(d):\n\ndef F1(a):\n\n\tdef F1_inner():\n\ndef F2(b):\n\n'
+    self.bList['variables_only'] = 'A = 1\n\n\tA_ignored = 11\n\nD=4\n\nC\t=\t3\n\nB = None\n\n'
+    self.bList['root_items'] = 'def F1():\nclass C1():\nV1 = 1\nclass C2():\nV2 = 2\ndef F2():\n'
+    self.bList['full'] =
+        'VAR1 = 1\nVAR2 = 2\n\n' ..
+        'class A:\n\tdef __init__(self):\n\tdef __str__(self):\n\tdef __repr__(self):\n' ..
+        'class C:\n\tdef __init__(self):\n\tdef do_something(self):\n' ..
+        'VAR3 = 3\nVAR4 = 4\n\n' ..
+        'class B(A):\n\tdef __init__(self):\n' ..
+        'def F3():\n' ..
+        'def F1():\n' ..
+        'def F2():\n\tdef F2_inner():\n'
+end
+
+function TestBuffer:test_export_python_structure()
+    local expected = {}
+
+    expected['classes_only'] = 'v Classes\n  v A\n    . B_inner\n  . C\n  . D\n  . L\n. Functions\n. Variables'
+    expected['functions_only'] = '. Classes\nv Functions\n  v F1\n    . F1_inner\n  . F2\n  . F3\n  . F4\n. Variables'
+    expected['variables_only'] = '. Classes\n. Functions\nv Variables\n  . A\n  . B\n  . C\n  . D'
+    expected['root_items'] = 'v Classes\n  . C1\n  . C2\nv Functions\n  . F1\n  . F2\nv Variables\n  . V1\n  . V2'
+    expected['full'] =
+        'v Classes\n' ..
+        '  v A\n    . __init__\n    . __repr__\n    . __str__\n' ..
+        '  v B\n    . __init__\n' ..
+        '  v C\n    . __init__\n    . do_something\n' ..
+        'v Functions\n' ..
+        '  . F1\n' ..
+        '  v F2\n    . F2_inner\n' ..
+        '  . F3\n' ..
+        'v Variables\n' ..
+        '  . VAR1\n' ..
+        '  . VAR2\n' ..
+        '  . VAR3\n' ..
+        '  . VAR4'
+
+    for k, v in pairs(expected) do
+        local pythonstr = self.bList[k]
+        local nvb = nbp.tree_to_navbar(nbp.export_structure_python(pythonstr))
+        lu.assertEquals(nvb:tree('bare', 0, true), expected[k])
+    end
+end
+
 --------------------------------------------------------------------------------
 -- Running the test
 --------------------------------------------------------------------------------

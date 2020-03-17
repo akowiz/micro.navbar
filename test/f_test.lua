@@ -7,7 +7,7 @@
 local lu = require('luaunit')
 local nbp = require('navbar_python')
 
-local DEBUG = true
+local DEBUG = false
 
 -------------------------------------------------------------------------------
 -- Helper Functions
