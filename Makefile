@@ -17,6 +17,7 @@ help:
 	@echo "----------------"
 	@echo
 	@echo "clear:   clear the terminal."
+	@echo "clean: 	clean the generated files (doc, etc.)"
 	@echo
 	@echo "doc: 	build the documentation."
 	@echo
