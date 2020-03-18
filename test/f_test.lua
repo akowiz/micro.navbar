@@ -8,7 +8,7 @@ package.path = "navbar/?.lua;" .. package.path
 
 local lu  = require('luaunit')
 local gen = require('generic')
-local nbp = require('lang_python')
+local lgp = require('lang_python')
 
 local DEBUG = false
 
@@ -60,21 +60,22 @@ end
 
 function TestBuffer:test_can_display_python_structure()
     -- Test that we can extract the python structure from a buffer containing python code.
-    local root = nbp.export_structure_python(self.buffer)
+    local root = lgp.export_structure_python(self.buffer)
 
-    -- Sort the children ofroot
-    table.sort(root.children)
+    -- Sort the children of root
+    local children = root:get_children()
+    table.sort(children)
 
-    local classes = nbp.Node:new('Classes')
-    local functions = nbp.Node:new('Functions')
-    local variables = nbp.Node:new('Variables')
+    local classes = lgp.Node('Classes')
+    local functions = lgp.Node('Functions')
+    local variables = lgp.Node('Variables')
 
-    for k, v in ipairs(root.children) do
-        if v.kind == nbp.T_CLASS then
+    for k, v in ipairs(children) do
+        if v.kind == lgp.T_CLASS then
             classes:append(v)
-        elseif v.kind == nbp.T_FUNCTION then
+        elseif v.kind == lgp.T_FUNCTION then
             functions:append(v)
-        elseif v.kind == nbp.T_CONSTANT then
+        elseif v.kind == lgp.T_CONSTANT then
             variables:append(v)
         end
     end
@@ -90,20 +91,23 @@ function TestBuffer:test_can_display_python_structure()
     -- lu.assertNotEquals(gen.is_empty(variables.children), false)
 
     -- We expect the items in structure to be nodes
-    local class_root_1 = nbp.Node:new("Foo", nbp.T_CLASS, 0, 34, nil)
-    local class_root_2 = nbp.Node:new("Bar", nbp.T_CLASS, 0, 44, nil)
-    local func_root_1 = nbp.Node:new("combine_data", nbp.T_FUNCTION, 0, 7, nil)
-    local func_root_2 = nbp.Node:new("display_something", nbp.T_FUNCTION, 0, 10, nil)
-    local const_root_1 = nbp.Node:new("DM_NONE", nbp.T_CONSTANT, 0, 4, nil)
-    local const_root_2 = nbp.Node:new("DEF_TITLE", nbp.T_CONSTANT, 0, 5, nil)
+    local class_root_1 = lgp.Node("Foo", lgp.T_CLASS, 0, 34, nil)
+    local class_root_2 = lgp.Node("Bar", lgp.T_CLASS, 0, 44, nil)
+    local func_root_1 = lgp.Node("combine_data", lgp.T_FUNCTION, 0, 7, nil)
+    local func_root_2 = lgp.Node("display_something", lgp.T_FUNCTION, 0, 10, nil)
+    local const_root_1 = lgp.Node("DM_NONE", lgp.T_CONSTANT, 0, 4, nil)
+    local const_root_2 = lgp.Node("DEF_TITLE", lgp.T_CONSTANT, 0, 5, nil)
 
     -- We expect the items to be sorted by name
-    lu.assertEquals(classes.children[1].name, class_root_2.name)
-    lu.assertEquals(classes.children[2].name, class_root_1.name)
-    lu.assertEquals(functions.children[1].name, func_root_1.name)
-    lu.assertEquals(functions.children[2].name, func_root_2.name)
-    lu.assertEquals(variables.children[1].name, const_root_2.name)
-    lu.assertEquals(variables.children[2].name, const_root_1.name)
+    local c_children = classes:get_children()
+    local f_children = functions:get_children()
+    local v_children = variables:get_children()
+    lu.assertEquals(c_children[1].name, class_root_2.name)
+    lu.assertEquals(c_children[2].name, class_root_1.name)
+    lu.assertEquals(f_children[1].name, func_root_1.name)
+    lu.assertEquals(f_children[2].name, func_root_2.name)
+    lu.assertEquals(v_children[1].name, const_root_2.name)
+    lu.assertEquals(v_children[2].name, const_root_1.name)
 
     if DEBUG then
         print('\n' .. classes:tree('box'))
@@ -121,14 +125,14 @@ TestNode = {} -- class
 
 function TestNode:setUp()
     -- Setup function for our tests.
-    self.node0 = nbp.Node:new()
-    self.node1 = nbp.Node:new('TestClass', nbp.T_CLASS,     4, 10, true)
-    self.node2 = nbp.Node:new('TestFunc',  nbp.T_FUNCTION,  4, 20)
-    self.root1 = nbp.Node:new(nbp.ROOT)
+    self.node0 = lgp.Node()
+    self.node1 = lgp.Node('TestClass', lgp.T_CLASS,     4, 10, true)
+    self.node2 = lgp.Node('TestFunc',  lgp.T_FUNCTION,  4, 20)
+    self.root1 = lgp.Node('/')
 
-    local n1 = nbp.Node:new('TestClass', nbp.T_CLASS,    4, 10)
-    local n2 = nbp.Node:new('TestFunc',  nbp.T_FUNCTION, 4)
-    self.root2 = nbp.Node:new(nbp.ROOT)
+    local n1 = lgp.Node('TestClass', lgp.T_CLASS,    4, 10)
+    local n2 = lgp.Node('TestFunc',  lgp.T_FUNCTION, 4)
+    self.root2 = lgp.Node('/')
     self.root2:append(n1)
     n1:append(n2)
 end
@@ -137,7 +141,7 @@ function TestNode:test_can_display_node()
     -- Test that we can display a node and its children into a tree (string).
 
     -- The root node return '/' because it is a special case.
-    lu.assertEquals(self.root1:tree('bare', 0), '. ' .. nbp.ROOT)
+    lu.assertEquals(self.root1:tree('bare', 0), '. ' .. '/')
 
     -- A single node without children return the name of the node with some
     -- indent.
@@ -150,6 +154,7 @@ function TestNode:test_can_display_node()
 end
 
 -- class TestNode
+--]]
 
 
 --------------------------------------------------------------------------------
