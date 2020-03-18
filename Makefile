@@ -2,10 +2,11 @@
 # A generic Makefile for handling lua5.3 developpment process.
 ################################################################################
 
-DIST = dist
+SRC_DIR = 'navbar'
 
-LATEST = $(shell find $(DIST) -type f -name *.whl | sort -V | tail -1)
-LATEST_FILE = $(shell basename $(LATEST))
+TEST_DIR = 'test'
+TEST_FILES_FUNC := $(shell find $(TEST_DIR) -name 'f_*.lua')
+TEST_FILES_UNIT := $(shell find $(TEST_DIR) -name 'u_*.lua')
 
 ################################################################################
 # Rules
@@ -37,10 +38,10 @@ push:
 	git push --tags
 
 testu:
-	lua test/u_*.lua
+	@for file in $(TEST_FILES_UNIT); do echo $$file; lua $$file; done
 
 testf:
-	lua test/f_*.lua
+	@for file in $(TEST_FILES_FUNC); do echo $$file; lua $$file; done
 
 test: testf testu
 
