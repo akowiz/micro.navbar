@@ -23,7 +23,7 @@ help:
 	@echo
 	@echo "push:    push repository on server with git push and git push --tags."
 
-ldoc:
+doc:
 	@ldoc -q -p 'micro_navbar' -d doc navbar 2>/dev/null
 
 clean:
@@ -37,11 +37,11 @@ push:
 	git push --tags
 
 testu:
-	lua test/u_test.lua
-	lua test/u_generic.lua
-#	lua test/u_tree.lua
+	lua test/u_*.lua
 
 testf:
-	lua test/f_test.lua
+	lua test/f_*.lua
 
 test: testf testu
+
+.PHONY: doc
