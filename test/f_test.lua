@@ -10,7 +10,7 @@ local lu  = require('luaunit')
 local gen = require('generic')
 local lgp = require('lang_python')
 
-local DEBUG = false
+local DEBUG = true
 
 -------------------------------------------------------------------------------
 -- Helper Functions
@@ -91,12 +91,12 @@ function TestBuffer:test_can_display_python_structure()
     -- lu.assertNotEquals(gen.is_empty(variables.children), false)
 
     -- We expect the items in structure to be nodes
-    local class_root_1 = lgp.Node("Foo", lgp.T_CLASS, 0, 34, nil)
-    local class_root_2 = lgp.Node("Bar", lgp.T_CLASS, 0, 44, nil)
-    local func_root_1 = lgp.Node("combine_data", lgp.T_FUNCTION, 0, 7, nil)
-    local func_root_2 = lgp.Node("display_something", lgp.T_FUNCTION, 0, 10, nil)
-    local const_root_1 = lgp.Node("DM_NONE", lgp.T_CONSTANT, 0, 4, nil)
-    local const_root_2 = lgp.Node("DEF_TITLE", lgp.T_CONSTANT, 0, 5, nil)
+    local class_root_1 = lgp.Node("Foo", lgp.T_CLASS, 0, 34)
+    local class_root_2 = lgp.Node("Bar", lgp.T_CLASS, 0, 44)
+    local func_root_1 = lgp.Node("combine_data", lgp.T_FUNCTION, 0, 7)
+    local func_root_2 = lgp.Node("display_something", lgp.T_FUNCTION, 0, 10)
+    local const_root_1 = lgp.Node("DM_NONE", lgp.T_CONSTANT, 0, 4)
+    local const_root_2 = lgp.Node("DEF_TITLE", lgp.T_CONSTANT, 0, 5)
 
     -- We expect the items to be sorted by name
     local c_children = classes:get_children()
@@ -140,7 +140,7 @@ end
 function TestNode:test_can_display_node()
     -- Test that we can display a node and its children into a tree (string).
 
-    -- The root node return '/' because it is a special case.
+    -- The root node return '.. /'
     lu.assertEquals(self.root1:tree('bare', 0), '. ' .. '/')
 
     -- A single node without children return the name of the node with some
