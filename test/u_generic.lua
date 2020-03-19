@@ -51,21 +51,21 @@ function TestIsEmpty:test_various_tables()
 end
 
 
-TestHasValue = {} -- class
+TestIsIn = {} -- class
 
-function TestHasValue:setUp()
+function TestIsIn:setUp()
     self.empty = {}
     self.fruits = {'apple', 'pineapple', 'orange', 'kiwi', 'tomato'}
     self.vegetables = {'bean', 'asparagus', 'potato'}
 end
 
-function TestHasValue:test_table_has_value()
+function TestIsIn:test_table_has_value()
     local fruits_ok = {'apple', 'kiwi'}
 
     for k, v in pairs(fruits_ok) do
-        lu.assertEquals(gen.has_value(self.empty, v), false)
-        lu.assertEquals(gen.has_value(self.fruits, v), true)
-        lu.assertEquals(gen.has_value(self.vegetables, v), false)
+        lu.assertEquals(gen.is_in(v, self.empty), false)
+        lu.assertEquals(gen.is_in(v, self.fruits), true)
+        lu.assertEquals(gen.is_in(v, self.vegetables), false)
     end
 end
 
