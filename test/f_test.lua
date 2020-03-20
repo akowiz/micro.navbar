@@ -10,7 +10,7 @@ local lu  = require('luaunit')
 local gen = require('generic')
 local lgp = require('lang_python')
 
-local DEBUG = true
+local DEBUG = false
 
 -------------------------------------------------------------------------------
 -- Helper Functions
