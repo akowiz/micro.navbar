@@ -114,6 +114,12 @@ function TestBuffer:test_can_display_python_structure()
         print('\n' .. functions:tree('box'))
         print('\n' .. variables:tree('box'))
         print()
+
+        for _, obj in pairs({ classes, functions, variables }) do
+            for k, v in ipairs(obj:list()) do
+                print(v['node'].line, v['text'])
+            end
+        end
     end
 end
 

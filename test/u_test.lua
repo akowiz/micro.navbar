@@ -116,46 +116,83 @@ function TestBuffer:test_export_python_structure()
     local expected = {}
 
     expected['classes_only'] = {
-        [lgp.T_CLASS]    = 'v Classes\n  v A\n    . B_inner\n  . C\n  . D\n  . Z',
-        [lgp.T_FUNCTION] = '. Functions',
-        [lgp.T_CONSTANT] = '. Variables',
+        'v Classes',
+        '  v A',
+        '    . B_inner',
+        '  . C',
+        '  . D',
+        '  . Z',
+        '',
+        '. Functions',
+        '',
+        '. Variables',
     }
     expected['functions_only'] = {
-        [lgp.T_CLASS]    = '. Classes',
-        [lgp.T_FUNCTION] = 'v Functions\n  v F1\n    . F1_inner\n  . F2\n  . F3\n  . F4',
-        [lgp.T_CONSTANT] = '. Variables',
+        '. Classes',
+        '',
+        'v Functions',
+        '  v F1',
+        '    . F1_inner',
+        '  . F2',
+        '  . F3',
+        '  . F4',
+        '',
+        '. Variables',
     }
     expected['variables_only'] = {
-        [lgp.T_CLASS]    = '. Classes',
-        [lgp.T_FUNCTION] = '. Functions',
-        [lgp.T_CONSTANT] = 'v Variables\n  . A\n  . B\n  . C\n  . D',
+        '. Classes',
+        '',
+        '. Functions',
+        '',
+        'v Variables',
+        '  . A',
+        '  . B',
+        '  . C',
+        '  . D',
     }
     expected['root_items'] = {
-        [lgp.T_CLASS]    = 'v Classes\n  . C1\n  . C2',
-        [lgp.T_FUNCTION] = 'v Functions\n  . F1\n  . F2',
-        [lgp.T_CONSTANT] = 'v Variables\n  . V1\n  . V2',
+        'v Classes',
+        '  . C1',
+        '  . C2',
+        '',
+        'v Functions',
+        '  . F1',
+        '  . F2',
+        '',
+        'v Variables',
+        '  . V1',
+        '  . V2',
     }
     expected['full']   = {
-        [lgp.T_CLASS]    = 'v Classes\n' ..
-            '  v A\n    . __init__\n    . __repr__\n    . __str__\n' ..
-            '  v B\n    . __init__\n' ..
-            '  v C\n    . __init__\n    . do_something',
-        [lgp.T_FUNCTION] = 'v Functions\n' ..
-            '  . F1\n' ..
-            '  v F2\n    . F2_inner\n' ..
-            '  . F3',
-        [lgp.T_CONSTANT] = 'v Variables\n' ..
-            '  . VAR1\n' ..
-            '  . VAR2\n' ..
-            '  . VAR3\n' ..
-            '  . VAR4',
+        'v Classes',
+        '  v A',
+        '    . __init__',
+        '    . __repr__',
+        '    . __str__',
+        '  v B',
+        '    . __init__',
+        '  v C',
+        '    . __init__',
+        '    . do_something',
+        '',
+        'v Functions',
+        '  . F1',
+        '  v F2',
+        '    . F2_inner',
+        '  . F3',
+        '',
+        'v Variables',
+        '  . VAR1',
+        '  . VAR2',
+        '  . VAR3',
+        '  . VAR4',
     }
 
     for k, v in pairs(expected) do
         local pythonstr = self.bList[k]
         local ttree = lgp.tree_to_navbar(lgp.export_structure_python(pythonstr))
         for i, t in ipairs(ttree) do
-            lu.assertEquals(t:tree('bare', 0), expected[k][i])
+            lu.assertEquals(t['text'], expected[k][i])
         end
     end
 end
