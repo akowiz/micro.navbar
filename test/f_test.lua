@@ -60,7 +60,7 @@ end
 
 function TestBuffer:test_can_display_python_structure()
     -- Test that we can extract the python structure from a buffer containing python code.
-    local root = lgp.export_structure_python(self.buffer)
+    local root = lgp.export_structure(self.buffer)
 
     -- Sort the children of root
     local children = root:get_children()
