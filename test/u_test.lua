@@ -91,9 +91,9 @@ end
 
 -------------------------------------------------------------------------------
 
-TestBuffer = {}   -- class
+TestPythonBuffer = {}   -- class
 
-function TestBuffer:setUp()
+function TestPythonBuffer:setUp()
     -- Set up our tests
     self.bList = {}
 
@@ -112,7 +112,7 @@ function TestBuffer:setUp()
         'def F2():\n\tdef F2_inner():\n'
 end
 
-function TestBuffer:test_export_python_structure()
+function TestPythonBuffer:test_export_structure()
     local expected = {}
 
     expected['classes_only'] = {
