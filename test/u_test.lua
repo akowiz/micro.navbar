@@ -58,21 +58,21 @@ TestMatchLuaItem = {}    -- class
 
 function TestMatchLuaItem:setUp()
     self.pList = {
-        { 'CONST1=12',              {object=nil,    node=lgl.Node('CONST1', lgl.T_CONSTANT)} },
-        { 'obj.CONST2=12',          {object='obj',  node=lgl.Node('CONST2', lgl.T_CONSTANT)} },
-        { "local CONST3='abc'",     {object=nil,    node=lgl.Node('CONST3', lgl.T_CONSTANT)} },
-        { "local obj.CONST4='abc'", {object='obj',  node=lgl.Node('CONST4', lgl.T_CONSTANT)} },
-        { " CONST5='abc'",          {object=nil,    node=nil} }, -- this is valid lua but we will ignore
-        { "CONST6=='abc'",          {object=nil,    node=nil} },
-        { "CONST7!='abc'",          {object=nil,    node=nil} },
-        { "CONST8>='abc'",          {object=nil,    node=nil} },
+        { 'CONST1=12',              lgl.Node('CONST1', lgl.T_CONSTANT) },
+        { 'obj.CONST2=12',          lgl.Node('obj.CONST2', lgl.T_CONSTANT) },
+        { "local CONST3='abc'",     lgl.Node('CONST3', lgl.T_CONSTANT) },
+        { "local obj.CONST4='abc'", lgl.Node('obj.CONST4', lgl.T_CONSTANT) },
+        { " CONST5='abc'",          nil }, -- this is valid lua but we will ignore
+        { "CONST6=='abc'",          nil },
+        { "CONST7!='abc'",          nil },
+        { "CONST8>='abc'",          nil },
 
-        { 'function F1()',          {object=nil,    node=lgl.Node('F1', lgl.T_FUNCTION)} },
-        { 'function obj.F2()',      {object='obj',  node=lgl.Node('F2', lgl.T_FUNCTION)} },
-        { 'local function F3()',    {object=nil,    node=lgl.Node('F3', lgl.T_FUNCTION)} },
-        { 'local function obj.F4()',{object='obj',  node=lgl.Node('F4', lgl.T_FUNCTION)} },
-        { 'function F5',            {object=nil,    node=nil} }, -- this is valid lua but we will ignore
-        { 'functionF6()',           {object=nil,    node=nil} },
+        { 'function F1()',          lgl.Node('F1', lgl.T_FUNCTION) },
+        { 'function obj.F2()',      lgl.Node('obj.F2', lgl.T_FUNCTION) },
+        { 'local function F3()',    lgl.Node('F3', lgl.T_FUNCTION) },
+        { 'local function obj.F4()',lgl.Node('obj.F4', lgl.T_FUNCTION) },
+        { 'function F5',            nil }, -- this is valid lua but we will ignore
+        { 'functionF6()',           nil },
     }
 end
 
@@ -242,96 +242,71 @@ function TestLuaBuffer:setUp()
     -- Set up our tests
     self.bList = {}
 
-    self.bList['classes_only'] = 'class A:\n\n\tclass B_inner:\n\nclass D(A):\n\nclass C(A):\n\nclass Z:\n'
-    self.bList['functions_only'] = 'def F3(c):\n\ndef F4(d):\n\ndef F1(a):\n\n\tdef F1_inner():\n\ndef F2(b):\n\n'
-    self.bList['variables_only'] = 'A = 1\n\n\tA_ignored = 11\n\nD=4\n\nC\t=\t3\n\nB = None\n\n'
-    self.bList['root_items'] = 'def F1():\nclass C1():\nV1 = 1\nclass C2():\nV2 = 2\ndef F2():\n'
+    self.bList['functions_only'] = 'function F3(c)\n\nfunction F4(d)\n\nfunction F1(a):\n\n\tfunction F1_inner():\n\nfunction F2(b):\n\n'
+    self.bList['variables_only'] = 'A = 1\n\n\tA_ignored = 11\n\nD=4\n\nC\t=\t3\n\nlocal B = None\n\n'
+    self.bList['root_items'] = 'function F1()\nclass C1()\nV1 = 1\nclass C2()\nV2 = 2\nlocal function F2()\n'
     self.bList['full'] =
-        'VAR1 = 1\nVAR2 = 2\n\n' ..
+        'VAR1 = 1\nlocal VAR2 = 2\n\n' ..
         'class A:\n\tdef __init__(self):\n\tdef __str__(self):\n\tdef __repr__(self):\n' ..
         'class C:\n\tdef __init__(self):\n\tdef do_something(self):\n' ..
-        'VAR3 = 3\nVAR4 = 4\n\n' ..
+        'local VAR3 = 3\nVAR4 = 4\n\n' ..
         'class B(A):\n\tdef __init__(self):\n' ..
-        'def F3():\n' ..
-        'def F1():\n' ..
-        'def F2():\n\tdef F2_inner():\n'
+        'function F3():\n' ..
+        'local function F1()\n' ..
+        'local function F2()\n\tlocal function F2_inner():\n'
 end
 
 function TestLuaBuffer:test_export_structure()
     local expected = {}
 
-    -- expected['classes_only'] = {
-        -- 'v Classes',
-        -- '  v A',
-        -- '    . B_inner',
-        -- '  . C',
-        -- '  . D',
-        -- '  . Z',
-        -- '',
-        -- '. Functions',
-        -- '',
-        -- '. Variables',
-    -- }
-    -- expected['functions_only'] = {
-        -- '. Classes',
-        -- '',
-        -- 'v Functions',
-        -- '  v F1',
-        -- '    . F1_inner',
-        -- '  . F2',
-        -- '  . F3',
-        -- '  . F4',
-        -- '',
-        -- '. Variables',
-    -- }
-    -- expected['variables_only'] = {
-        -- '. Classes',
-        -- '',
-        -- '. Functions',
-        -- '',
-        -- 'v Variables',
-        -- '  . A',
-        -- '  . B',
-        -- '  . C',
-        -- '  . D',
-    -- }
-    -- expected['root_items'] = {
-        -- 'v Classes',
-        -- '  . C1',
-        -- '  . C2',
-        -- '',
-        -- 'v Functions',
-        -- '  . F1',
-        -- '  . F2',
-        -- '',
-        -- 'v Variables',
-        -- '  . V1',
-        -- '  . V2',
-    -- }
-    -- expected['full']   = {
-        -- 'v Classes',
-        -- '  v A',
-        -- '    . __init__',
-        -- '    . __repr__',
-        -- '    . __str__',
-        -- '  v B',
-        -- '    . __init__',
-        -- '  v C',
-        -- '    . __init__',
-        -- '    . do_something',
-        -- '',
-        -- 'v Functions',
-        -- '  . F1',
-        -- '  v F2',
-        -- '    . F2_inner',
-        -- '  . F3',
-        -- '',
-        -- 'v Variables',
-        -- '  . VAR1',
-        -- '  . VAR2',
-        -- '  . VAR3',
-        -- '  . VAR4',
-    -- }
+    expected['functions_only'] = {
+        '. Objects',
+        '',
+        'v Functions',
+        '  . F1',
+        '  . F1_inner',
+        '  . F2',
+        '  . F3',
+        '  . F4',
+        '',
+        '. Variables',
+    }
+    expected['variables_only'] = {
+        '. Objects',
+        '',
+        '. Functions',
+        '',
+        'v Variables',
+        '  . A',
+        '  . B',
+        '  . C',
+        '  . D',
+    }
+    expected['root_items'] = {
+        '. Objects',
+        '',
+        'v Functions',
+        '  . F1',
+        '  . F2',
+        '',
+        'v Variables',
+        '  . V1',
+        '  . V2',
+    }
+    expected['full']   = {
+        '. Objects',
+        '',
+        'v Functions',
+        '  . F1',
+        '  . F2',
+        '  . F3',
+        '',
+        'v Variables',
+        '  . VAR1',
+        '  . VAR2',
+        '  . VAR3',
+        '  . VAR4',
+    }
 
     for k, v in pairs(expected) do
         local luastr = self.bList[k]
