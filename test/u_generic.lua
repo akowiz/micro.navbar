@@ -11,6 +11,44 @@ local gen = require('generic')
 
 -------------------------------------------------------------------------------
 
+TestString = {} -- class
+
+function TestString:setUp()
+    self.tList = {
+        'start rl fhfkfkfkf',
+        'star jgdfkjd start',
+        'end jglkdjkdjg',
+        'kjflsjmsj end',
+        'jflsjf:fkjldkfj',
+        'kjflksdjf.sffdk',
+        ':.',
+        'start:end',
+    }
+end
+
+function TestString:test_string_starts_with()
+    for k, v in ipairs(self.tList) do
+        expected = (k == 1) or (k == 8)
+        lu.assertEquals(v:starts_with('start'), expected)
+    end
+end
+
+function TestString:test_string_ends_with()
+    for k, v in ipairs(self.tList) do
+        expected = (k == 4) or (k == 8)
+        lu.assertEquals(v:ends_with('end'), expected)
+    end
+end
+
+function TestString:test_string_contains()
+    for k, v in ipairs(self.tList) do
+        expected = (k == 5) or (k == 7) or (k == 8)
+        lu.assertEquals(v:contains(':'), expected)
+    end
+end
+
+
+
 TestSplit = {} -- class
 
 function TestSplit:setUp()
