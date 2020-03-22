@@ -8,6 +8,7 @@ package.path = "navbar/?.lua;" .. package.path
 
 local lu  = require('luaunit')
 local gen = require('generic')
+local lg  = require('lang')
 local lgp = require('lang_python')
 local lgl = require('lang_lua')
 
@@ -18,23 +19,23 @@ TestMatchPythonItem = {}    -- class
 
 function TestMatchPythonItem:setUp()
     self.pList = {
-        { 'CONST1=12',      lgp.Node('CONST1', lgp.T_CONSTANT, 0) },
-        { "CONST2='abc'",   lgp.Node('CONST2', lgp.T_CONSTANT, 0) },
+        { 'CONST1=12',      lgp.Node('CONST1', lg.T_VARIABLE, 0) },
+        { "CONST2='abc'",   lgp.Node('CONST2', lg.T_VARIABLE, 0) },
         { " CONST3='abc'",  nil },
         { "CONST4=='abc'",  nil },
         { "CONST5!='abc'",  nil },
         { "CONST6>='abc'",  nil },
 
-        { 'class C1:',      lgp.Node('C1', lgp.T_CLASS, 0) },
-        { 'class C2(C1):',  lgp.Node('C2', lgp.T_CLASS, 0) },
-        { '  class C3:',    lgp.Node('C3', lgp.T_CLASS, 2) },
-        { '    class C4:',  lgp.Node('C4', lgp.T_CLASS, 4) },
+        { 'class C1:',      lgp.Node('C1', lg.T_CLASS, 0) },
+        { 'class C2(C1):',  lgp.Node('C2', lg.T_CLASS, 0) },
+        { '  class C3:',    lgp.Node('C3', lg.T_CLASS, 2) },
+        { '    class C4:',  lgp.Node('C4', lg.T_CLASS, 4) },
         { 'class C5',       nil },
         { 'classC6',        nil },
 
-        { 'def F1():',      lgp.Node('F1', lgp.T_FUNCTION, 0) },
-        { '  def F2():',    lgp.Node('F2', lgp.T_FUNCTION, 2) },
-        { '    def F3():',  lgp.Node('F3', lgp.T_FUNCTION, 4) },
+        { 'def F1():',      lgp.Node('F1', lg.T_FUNCTION, 0) },
+        { '  def F2():',    lgp.Node('F2', lg.T_FUNCTION, 2) },
+        { '    def F3():',  lgp.Node('F3', lg.T_FUNCTION, 4) },
         { 'def F4:',        nil },
         { 'def F5',         nil },
         { 'defF6',          nil },
@@ -58,24 +59,24 @@ TestMatchLuaItem = {}    -- class
 
 function TestMatchLuaItem:setUp()
     self.pList = {
-        { 'CONST1=12',              lgl.Node('CONST1', lgl.T_CONSTANT) },
-        { 'obj.CONST2=12',          lgl.Node('obj.CONST2', lgl.T_CONSTANT) },
-        { "local CONST3='abc'",     lgl.Node('CONST3', lgl.T_CONSTANT) },
-        { "local obj.CONST4='abc'", lgl.Node('obj.CONST4', lgl.T_CONSTANT) },
+        { 'CONST1=12',              lgl.Node('CONST1', lg.T_VARIABLE) },
+        { 'obj.CONST2=12',          lgl.Node('obj.CONST2', lg.T_VARIABLE) },
+        { "local CONST3='abc'",     lgl.Node('CONST3', lg.T_VARIABLE) },
+        { "local obj.CONST4='abc'", lgl.Node('obj.CONST4', lg.T_VARIABLE) },
         { " CONST5='abc'",          nil }, -- this is valid lua but we will ignore
         { "CONST6=='abc'",          nil },
         { "CONST7!='abc'",          nil },
         { "CONST8>='abc'",          nil },
 
-        { 'function F1()',          lgl.Node('F1', lgl.T_FUNCTION) },
-        { 'function obj.F2()',      lgl.Node('obj.F2', lgl.T_FUNCTION) },
-        { 'local function F3()',    lgl.Node('F3', lgl.T_FUNCTION) },
-        { 'local function obj.F4()',lgl.Node('obj.F4', lgl.T_FUNCTION) },
+        { 'function F1()',          lgl.Node('F1', lg.T_FUNCTION) },
+        { 'function obj.F2()',      lgl.Node('obj.F2', lg.T_FUNCTION) },
+        { 'local function F3()',    lgl.Node('F3', lg.T_FUNCTION) },
+        { 'local function obj.F4()',lgl.Node('obj.F4', lg.T_FUNCTION) },
         { 'function F5',            nil }, -- this is valid lua but we will ignore
         { 'functionF6()',           nil },
-        { 'function O1.O2:F7()',        lgl.Node('O1.O2:F7', lgl.T_FUNCTION) },
-        { 'local function O1.O2:F8()',  lgl.Node('O1.O2:F8', lgl.T_FUNCTION) },
-        { 'function tree.Node:do_some()',  lgl.Node('tree.Node:do_some', lgl.T_FUNCTION) },
+        { 'function O1.O2:F7()',        lgl.Node('O1.O2:F7', lg.T_FUNCTION) },
+        { 'local function O1.O2:F8()',  lgl.Node('O1.O2:F8', lg.T_FUNCTION) },
+        { 'function tree.Node:do_some()',  lgl.Node('tree.Node:do_some', lg.T_FUNCTION) },
     }
 end
 
@@ -99,7 +100,7 @@ function TestNode:setUp()
 
     self.nList = {
         empty  = lgp.Node(),
-        simple = lgp.Node("Simple", lgp.T_CLASS, 4, 42, true),
+        simple = lgp.Node("Simple", lg.T_CLASS, 4, 42, true),
     }
 end
 
@@ -108,7 +109,7 @@ function TestNode:test_default()
 
     assert(node.name == '', 'name not empty')
     assert(node.indent == 0, 'indent not 0')
-    assert(node.kind == lgp.T_NONE, 'kind not T_NONE')
+    assert(node.kind == lg.T_NONE, 'kind not T_NONE')
     assert(node.line == -1, 'line not -1')
     assert(node.closed == false, 'closed not false')
     assert(gen.is_empty(node:get_children()), 'children not empty')
@@ -120,7 +121,7 @@ function TestNode:test_simple()
 
     assert(node.name == 'Simple', 'wrong name')
     assert(node.indent == 4, 'wrong indent')
-    assert(node.kind == lgp.T_CLASS, 'wrong kind')
+    assert(node.kind == lg.T_CLASS, 'wrong kind')
     assert(node.line == 42, 'wrong line')
     assert(node.closed == true, 'wrong closed')
     assert(gen.is_empty(node:get_children()), 'wrong children')

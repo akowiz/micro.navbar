@@ -8,6 +8,7 @@ package.path = "navbar/?.lua;" .. package.path
 
 local lu  = require('luaunit')
 local gen = require('generic')
+local lg  = require('lang')
 local lgp = require('lang_python')
 
 local DEBUG = false
@@ -71,11 +72,11 @@ function TestBuffer:test_can_display_python_structure()
     local variables = lgp.Node('Variables')
 
     for k, v in ipairs(children) do
-        if v.kind == lgp.T_CLASS then
+        if v.kind == lg.T_CLASS then
             classes:append(v)
-        elseif v.kind == lgp.T_FUNCTION then
+        elseif v.kind == lg.T_FUNCTION then
             functions:append(v)
-        elseif v.kind == lgp.T_CONSTANT then
+        elseif v.kind == lg.T_VARIABLE then
             variables:append(v)
         end
     end
