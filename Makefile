@@ -4,9 +4,14 @@
 
 SRC_DIR = 'navbar'
 
+LOCAL_DIRS  := $(shell find $(SRC_DIR) -type d)
+LOCAL_FILES := $(shell find $(SRC_DIR) -name '*.lua' -or -name '*.md' -or -name '*.json')
+
 TEST_DIR = 'test'
 TEST_FILES_FUNC := $(shell find $(TEST_DIR) -name 'f_*.lua')
 TEST_FILES_UNIT := $(shell find $(TEST_DIR) -name 'u_*.lua')
+
+DEST = '$(HOME)/.config/micro/plug'
 
 ################################################################################
 # Rules
@@ -32,6 +37,12 @@ clean:
 
 clear:
 	clear
+
+install: install_link
+
+install_link:
+	@for dir  in $(LOCAL_DIRS);  do echo 'mkdir $(DEST)/'$$dir;  mkdir -p $(DEST)/$$dir; done
+	@for file in $(LOCAL_FILES); do echo 'ln -s $(DEST)/'$$file; ln -r -s $$file $(DEST)/$$file; done
 
 push:
 	git push
