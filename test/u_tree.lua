@@ -55,7 +55,6 @@ end
 function TestNodeSimple:test_default()
     local node = self.nList['empty']
     assert(node.name == '', 'name not empty')
-    assert(node.closed == false, 'closed not false')
     assert(gen.is_empty(node:get_children()), 'children not empty')
     assert(node:get_parent() == nil, 'parent not nil')
 end
@@ -63,7 +62,6 @@ end
 function TestNodeSimple:test_simple()
     local node = self.nList['simple']
     assert(node.name == 'Simple', 'wrong name')
-    assert(node.closed == true, 'wrong closed')
     assert(gen.is_empty(node:get_children()), 'wrong children')
     assert(node:get_parent() == nil, 'wrong parent')
 end
@@ -138,10 +136,6 @@ function TestNodeSimple:test_display_tree()
 
     treestr = '▾ With Children\n  ├ Children 1 with Children\n  │ ├ Children A\n  │ └ Children B\n  ├ Children 2\n  └ Children 3'
     lu.assertEquals(node:tree('box'), treestr)
-
-    self.nList['with_children']:get_children()[1].closed = true
-    treestr = 'v With Children\n  > Children 1 with Children\n  . Children 2\n  . Children 3'
-    lu.assertEquals(node:tree('bare', 0), treestr)
 
     -- print('\n' .. self.nList['with_children']:tree('box', 0))
 

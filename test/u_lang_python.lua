@@ -21,7 +21,7 @@ function TestNode:setUp()
 
     self.nList = {
         empty  = lgp.Node(),
-        simple = lgp.Node("Simple", lg.T_CLASS, 4, 42, true),
+        simple = lgp.Node("Simple", lg.T_CLASS, 4, 42),
     }
 end
 
@@ -32,7 +32,6 @@ function TestNode:test_default()
     assert(node.indent == 0, 'indent not 0')
     assert(node.kind == lg.T_NONE, 'kind not T_NONE')
     assert(node.line == -1, 'line not -1')
-    assert(node.closed == false, 'closed not false')
     assert(gen.is_empty(node:get_children()), 'children not empty')
     assert(node.parent == nil, 'parent not nil')
 end
@@ -44,7 +43,6 @@ function TestNode:test_simple()
     assert(node.indent == 4, 'wrong indent')
     assert(node.kind == lg.T_CLASS, 'wrong kind')
     assert(node.line == 42, 'wrong line')
-    assert(node.closed == true, 'wrong closed')
     assert(gen.is_empty(node:get_children()), 'wrong children')
     assert(node.parent == nil, 'wrong parent')
 end

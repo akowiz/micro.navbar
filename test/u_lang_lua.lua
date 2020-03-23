@@ -21,7 +21,7 @@ function TestNode:setUp()
 
     self.nList = {
         empty  = lgl.Node(),
-        simple = lgl.Node("Simple", lg.T_CLASS, 42, true),
+        simple = lgl.Node("Simple", lg.T_CLASS, 42),
     }
 end
 
@@ -31,7 +31,6 @@ function TestNode:test_default()
     assert(node.name == '', 'name not empty')
     assert(node.kind == lg.T_NONE, 'kind not T_NONE')
     assert(node.line == -1, 'line not -1')
-    assert(node.closed == false, 'closed not false')
     assert(gen.is_empty(node:get_children()), 'children not empty')
     assert(node.parent == nil, 'parent not nil')
 end
@@ -42,7 +41,6 @@ function TestNode:test_simple()
     assert(node.name == 'Simple', 'wrong name')
     assert(node.kind == lg.T_CLASS, 'wrong kind')
     assert(node.line == 42, 'wrong line')
-    assert(node.closed == true, 'wrong closed')
     assert(gen.is_empty(node:get_children()), 'wrong children')
     assert(node.parent == nil, 'wrong parent')
 end
