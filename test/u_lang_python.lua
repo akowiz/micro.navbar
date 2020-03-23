@@ -193,9 +193,8 @@ function TestPythonBuffer:test_export_structure()
     for k, v in pairs(expected) do
         local str = self.bList[k]
         local root = lgp.export_structure(str)
-        local tl_list = lgp.tree_to_navbar(root)
 
-        for i, tl in ipairs(tl_list) do
+        for i, tl in ipairs(root:to_navbar()) do
             lu.assertEquals(tostring(tl), v[i])
         end
     end
