@@ -6,9 +6,10 @@
 
 package.path = "navbar/?.lua;" .. package.path
 
-local lu  = require('luaunit')
-local gen = require('generic')
-local lg  = require('lang')
+local lu   = require('luaunit')
+local gen  = require('generic')
+local tree = require('tree')
+local lg   = require('lang')
 
 
 -------------------------------------------------------------------------------
@@ -56,11 +57,11 @@ function TestTreeLine:setUp()
     rootc:append(lg.Node('Child A'))
 
     self.tlList = {
-        empty  = lg.TreeLine(),
-        simple = lg.TreeLine(lg.Node('Simple')),
-        root   = lg.TreeLine(lg.Node('Root'), '', 'root'),
-        full   = lg.TreeLine(lg.Node('Full'), '  ', 'nth_key'),
-        rootc  = lg.TreeLine(rootc, '', 'root_open'),
+        empty  = tree.TreeLine(),
+        simple = tree.TreeLine(lg.Node('Simple')),
+        root   = tree.TreeLine(lg.Node('Root'), '', 'root'),
+        full   = tree.TreeLine(lg.Node('Full'), '  ', 'nth_key'),
+        rootc  = tree.TreeLine(rootc, '', 'root_open'),
     }
 end
 
