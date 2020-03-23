@@ -81,6 +81,26 @@ function TestSplit:test_split_properly()
 end
 
 
+TestTableReverse = {} -- class
+
+function TestTableReverse:setUp()
+    self.tList = {
+        empty =     {},
+        numbers =   { 1, 2, 3, 4, 5, 6, 7, 8, 9, },
+        strings =   { 'a', 'b', 'c', 'd', 'e', 'f', },
+    }
+end
+
+function TestTableReverse:test_table_get_reversed()
+    for k, tab in pairs(self.tList) do
+        list = gen.table_clone(tab)
+        gen.table_reverse(list)
+        for i, _ in ipairs(list) do
+            lu.assertEquals(list[i], tab[#list-i+1])
+        end
+    end
+end
+
 TestIsEmpty = {} -- class
 
 function TestIsEmpty:setUp()

@@ -11,6 +11,7 @@ local tree = {}
 local gen  = require('generic')
 
 
+tree.SEP = '/'
 local DEBUG = false
 
 -------------------------------------------------------------------------------
@@ -28,52 +29,52 @@ function tree.get_style(stylename, spacing)
 
     ret = {}
     if     stylename == 'bare' then
-        ret['root']         = '.'..string.rep('', spacing)..' '
-        ret['root_open']    = 'v'..string.rep('', spacing)..' '
-        ret['root_closed']  = '>'..string.rep('', spacing)..' '
-        ret['1st_level_1st_key']        = '.'..string.rep(' ', spacing)..' '
-        ret['1st_level_1st_key_open']   = 'v'..string.rep(' ', spacing)..' '
-        ret['1st_level_1st_key_closed'] = '>'..string.rep(' ', spacing)..' '
-        ret['nth_key']        = '.'..string.rep(' ', spacing)..' '
-        ret['nth_key_open']   = 'v'..string.rep(' ', spacing)..' '
-        ret['nth_key_closed'] = '>'..string.rep(' ', spacing)..' '
-        ret['lst_key']        = '.'..string.rep(' ', spacing)..' '
-        ret['lst_key_open']   = 'v'..string.rep(' ', spacing)..' '
-        ret['lst_key_closed'] = '>'..string.rep(' ', spacing)..' '
-        ret['empty'] = ' '..string.rep(' ', spacing)..' '
-        ret['link']  = ' '..string.rep(' ', spacing)..' '
+        ret['root_d']   = '.'..string.rep('', spacing)..' '     -- root default
+        ret['root_o']   = 'v'..string.rep('', spacing)..' '     -- root open
+        ret['root_c']   = '>'..string.rep('', spacing)..' '     -- root closed
+        ret['1st_d']    = '.'..string.rep(' ', spacing)..' '    -- 1st child default
+        ret['1st_o']    = 'v'..string.rep(' ', spacing)..' '    -- 1st child open
+        ret['1st_c']    = '>'..string.rep(' ', spacing)..' '    -- 1st child closed
+        ret['nth_d']    = '.'..string.rep(' ', spacing)..' '    -- Nth child default
+        ret['nth_o']    = 'v'..string.rep(' ', spacing)..' '    -- Nth child open
+        ret['nth_c']    = '>'..string.rep(' ', spacing)..' '    -- Nth child closed
+        ret['lst_d']    = '.'..string.rep(' ', spacing)..' '    -- last child default
+        ret['lst_o']    = 'v'..string.rep(' ', spacing)..' '    -- last child open
+        ret['lst_c']    = '>'..string.rep(' ', spacing)..' '    -- last child closed
+        ret['empty']    = ' '..string.rep(' ', spacing)..' '    -- empty padding
+        ret['link']     = ' '..string.rep(' ', spacing)..' '    -- padding with a vertical bar
 
     elseif stylename == 'ascii' then
-        ret['root']         = '.'..string.rep('', spacing)..' '
-        ret['root_open']    = '-'..string.rep('', spacing)..' '
-        ret['root_closed']  = '+'..string.rep('', spacing)..' '
-        ret['1st_level_1st_key']        = '.'..string.rep(' ', spacing)..' '
-        ret['1st_level_1st_key_open']   = '-'..string.rep(' ', spacing)..' '
-        ret['1st_level_1st_key_closed'] = '+'..string.rep(' ', spacing)..' '
-        ret['nth_key']        = '.'..string.rep(' ', spacing)..' '
-        ret['nth_key_open']   = '-'..string.rep(' ', spacing)..' '
-        ret['nth_key_closed'] = '+'..string.rep(' ', spacing)..' '
-        ret['lst_key']        = 'L'..string.rep(' ', spacing)..' '
-        ret['lst_key_open']   = '-'..string.rep(' ', spacing)..' '
-        ret['lst_key_closed'] = '+'..string.rep(' ', spacing)..' '
-        ret['empty'] = ' '..string.rep(' ', spacing)..' '
-        ret['link']  = '|'..string.rep(' ', spacing)..' '
+        ret['root_d']   = '.'..string.rep('', spacing)..' '
+        ret['root_o']   = '-'..string.rep('', spacing)..' '
+        ret['root_c']   = '+'..string.rep('', spacing)..' '
+        ret['1st_d']    = '.'..string.rep(' ', spacing)..' '
+        ret['1st_o']    = '-'..string.rep(' ', spacing)..' '
+        ret['1st_c']    = '+'..string.rep(' ', spacing)..' '
+        ret['nth_d']    = '.'..string.rep(' ', spacing)..' '
+        ret['nth_o']    = '-'..string.rep(' ', spacing)..' '
+        ret['nth_c']    = '+'..string.rep(' ', spacing)..' '
+        ret['lst_d']    = 'L'..string.rep(' ', spacing)..' '
+        ret['lst_o']    = '-'..string.rep(' ', spacing)..' '
+        ret['lst_c']    = '+'..string.rep(' ', spacing)..' '
+        ret['empty']    = ' '..string.rep(' ', spacing)..' '
+        ret['link']     = '|'..string.rep(' ', spacing)..' '
 
     elseif stylename == 'box' then
-        ret['root']         = '.'..string.rep('', spacing)..' '
-        ret['root_open']    = '▾'..string.rep('', spacing)..' '
-        ret['root_closed']  = '▸'..string.rep('', spacing)..' '
-        ret['1st_level_1st_key']        = '├'..string.rep('─', spacing)..' '
-        ret['1st_level_1st_key_open']   = '├'..string.rep('─', spacing)..' '
-        ret['1st_level_1st_key_closed'] = '╞'..string.rep('═', spacing)..' '
-        ret['nth_key']        = '├'..string.rep('─', spacing)..' '
-        ret['nth_key_open']   = '├'..string.rep('─', spacing)..' '
-        ret['nth_key_closed'] = '╞'..string.rep('═', spacing)..' '
-        ret['lst_key']        = '└'..string.rep('─', spacing)..' '
-        ret['lst_key_open']   = '└'..string.rep('─', spacing)..' '
-        ret['lst_key_closed'] = '╘'..string.rep('═', spacing)..' '
-        ret['empty'] = ' '..string.rep(' ', spacing)..' '
-        ret['link']  = '│'..string.rep(' ', spacing)..' '
+        ret['root_d']   = '.'..string.rep('', spacing)..' '
+        ret['root_o']   = '▾'..string.rep('', spacing)..' '
+        ret['root_c']   = '▸'..string.rep('', spacing)..' '
+        ret['1st_d']    = '├'..string.rep('─', spacing)..' '
+        ret['1st_o']    = '├'..string.rep('─', spacing)..' '
+        ret['1st_c']    = '╞'..string.rep('═', spacing)..' '
+        ret['nth_d']    = '├'..string.rep('─', spacing)..' '
+        ret['nth_o']    = '├'..string.rep('─', spacing)..' '
+        ret['nth_c']    = '╞'..string.rep('═', spacing)..' '
+        ret['lst_d']    = '└'..string.rep('─', spacing)..' '
+        ret['lst_o']    = '└'..string.rep('─', spacing)..' '
+        ret['lst_c']    = '╘'..string.rep('═', spacing)..' '
+        ret['empty']    = ' '..string.rep(' ', spacing)..' '
+        ret['link']     = '│'..string.rep(' ', spacing)..' '
 
     end
     return ret
@@ -144,6 +145,24 @@ function tree.NodeBase:get_label()
     return tostring(self)
 end
 
+function tree.NodeBase:get_abs_label()
+    local parents = {}
+
+    local current = self
+    local parent  = current:get_parent()
+
+    parents[#parents+1] = current:get_label()
+
+    while parent ~=  nil do
+        current = parent
+        parent  = current:get_parent()
+        parents[#parents+1] = current:get_label()
+    end
+    gen.table_reverse(parents)
+
+    return table.concat(parents, tree.SEP)
+end
+
 --- Return the parent of the current node.
 -- @treturn Node The parent of the current node or nil if it doesn't have one.
 function tree.NodeBase:get_parent()
@@ -160,12 +179,18 @@ end
 -- The lead characters are displayed in from of the node's label in the tree.
 -- @tparam string default Lead characters to be used if the node has no children.
 -- @tparam string open Lead characters to be used if the node has children and is 'open'.
+-- @tparam set closed List of abs_label that have to be closed.
 -- @treturn string The lead characters to be used.
-function tree.NodeBase:select_lead(default, open)
+function tree.NodeBase:select_lead(default, open, close, closed)
+    closed = closed or {}
+
     local lead = default
     local children = self:get_children()
     if not gen.is_empty(children) then
         lead = open
+        if closed[self:get_abs_label()] then
+            lead = close
+        end
     end
     return lead
 end
@@ -186,13 +211,15 @@ end
 -- @tparam string stylename The name of the string to be used. @see tree.get_style.
 -- @tparam int spacing The number of extra characters to add in the lead.
 -- @tparam bool hide_me Set to true to 'hide' the current node (i.e. only display its' children)
+-- @tparam table closed A list of string indicating that some nodes are closed (their children hidden).
 -- @treturn string The tree in a string format.
-function tree.NodeBase:tree(stylename, spacing, hide_me)
+function tree.NodeBase:tree(stylename, spacing, hide_me, closed)
     stylename = stylename or 'bare'
     spacing = spacing or 0
     hide_me = hide_me or false
+    closed  = closed or {}
 
-    local tl_list = self:to_treelines(stylename, spacing, hide_me)
+    local tl_list = self:to_treelines(stylename, spacing, hide_me, closed)
     local str_list = {}
     local ret
 
@@ -212,35 +239,39 @@ end
 -- @tparam string padding The string to use as padding for the current node.
 -- @tparam bool islast Set to true if node is the last children.
 -- @tparam bool isfirst Set to true if node is the first children.
-local function to_treelines_rec(style, node, list, padding, islast, isfirst)
+-- @tparam table closed A list of string indicating that some nodes are closed (their children hidden).
+local function to_treelines_rec(style, node, list, padding, islast, isfirst, closed)
     style = style or tree.get_style('bare', 0)
     list = list or {}
     padding = padding or ''
+    closed = closed or {}
 
     local lead_type
 
     -- print(node.name, padding, islast, isfirst)
 
     if     islast then
-        lead_type = node:select_lead('lst_key', 'lst_key_open')
+        lead_type = node:select_lead('lst_d', 'lst_o', 'lst_c', closed)
     elseif isfirst then
-        lead_type = node:select_lead('1st_level_1st_key', '1st_level_1st_key_open')
+        lead_type = node:select_lead('1st_d', '1st_o', '1st_c', closed)
     else
-        lead_type = node:select_lead('nth_key', 'nth_key_open')
+        lead_type = node:select_lead('nth_d', 'nth_o', 'nth_c', closed)
     end
 
     table.insert(list, tree.TreeLine(node, padding, lead_type, style))
 
-    for k, child in ipairs(node:get_children()) do
-        local child_first = (k == 1)
-        local child_last = (k == #node:get_children())
-        local child_padding
-        if islast then
-            child_padding = padding .. style['empty']
-        else
-            child_padding = padding .. style['link']
+    if not closed[node:get_abs_label()] then
+        for k, child in ipairs(node:get_children()) do
+            local child_first = (k == 1)
+            local child_last = (k == #node:get_children())
+            local child_padding
+            if islast then
+                child_padding = padding .. style['empty']
+            else
+                child_padding = padding .. style['link']
+            end
+            to_treelines_rec(style, child, list, child_padding, child_last, child_first, closed)
         end
-        to_treelines_rec(style, child, list, child_padding, child_last, child_first)
     end
 end
 
@@ -248,12 +279,14 @@ end
 -- @tparam string stylename The name of the string to be used. @see tree.get_style.
 -- @tparam int spacing The number of extra characters to add in the lead.
 -- @tparam bool hide_me Set to true to 'hide' the current node (i.e. only display its' children)
+-- @tparam table closed A list of string indicating that some nodes are closed (their children hidden).
 -- @treturn table A list of TreeLine() objects.
-function tree.NodeBase:to_treelines(stylename, spacing, hide_me)
+function tree.NodeBase:to_treelines(stylename, spacing, hide_me, closed)
     -- Returns the tree (current node as root) in a string.
     stylename = stylename or 'bare'
     spacing = spacing or 0
     hide_me = hide_me or false
+    closed  = closed or {}
 
     local style = tree.get_style(stylename, spacing)
     local list = {}
@@ -261,28 +294,34 @@ function tree.NodeBase:to_treelines(stylename, spacing, hide_me)
     local padding = nil
 
     if not hide_me then
-        lead_type = self:select_lead('root', 'root_open')
+        lead_type = self:select_lead('root_d', 'root_o', 'root_c', closed)
         table.insert(list, tree.TreeLine(self, '', lead_type, style))
         padding = style['empty']
     end
 
-    local children = self:get_children()
-    for k, child in ipairs(children) do
-        local isfirst = (k == 1)
-        local islast  = (k == #children)
-        to_treelines_rec(style, child, list, padding, islast, isfirst)
+    if not closed[self:get_abs_label()] then
+        local children = self:get_children()
+        for k, child in ipairs(children) do
+            local isfirst = (k == 1)
+            local islast  = (k == #children)
+            to_treelines_rec(style, child, list, padding, islast, isfirst, closed)
+        end
     end
 
     return list
 end
 
 --- Convert a tree (made of Nodes) into a list of TreeLine (used to display our navbar).
--- @tparam Node tree The tree to convert.
+-- Note: the root of the tree will be hidden.
+-- @tparam string stylename The name of the string to be used. @see tree.get_style.
+-- @tparam int spacing The number of extra characters to add in the lead.
+-- @tparam table closed A list of string indicating that some nodes are closed (their children hidden).
 -- @treturn table A list of TreeLine.
-function tree.NodeBase:to_navbar(stylename, spacing)
+function tree.NodeBase:to_navbar(stylename, spacing, closed)
     stylename = stylename or 'bare'
     spacing = spacing or 0
-    local tl_list = self:to_treelines(stylename, spacing)
+    closed = closed or {}
+    local tl_list = self:to_treelines(stylename, spacing, true, closed)
     return tl_list
 end
 

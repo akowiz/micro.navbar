@@ -24,7 +24,7 @@ function TestNodeSimple:setUp()
     local childA = tree.NodeSimple("Children A")
     local childB = tree.NodeSimple("Children B")
 
-    local linear0 = tree.NodeSimple('/')
+    local linear0 = tree.NodeSimple(tree.SEP)
     local linear1 = tree.NodeSimple('Path1')
     local linear2 = tree.NodeSimple('Path2')
     linear0:append(linear1)
@@ -43,7 +43,8 @@ function TestNodeSimple:setUp()
         simple =        simple,
         no_children =   no_children,
         with_children = with_children,
-        linear =        linear0,
+        linear0 =       linear0,
+        linear2 =       linear2,
         child1 =        child1,
         child2 =        child2,
         child3 =        child3,
@@ -118,8 +119,8 @@ function TestNodeSimple:test_display_tree()
     lu.assertEquals(node:tree('bare', 0, true), '. Children A\n. Children B')
 
     -- A node with a single child, which has a single child
-    node = self.nList['linear']
-    treestr = 'v /\n  v Path1\n    . Path2'
+    node = self.nList['linear0']
+    treestr = 'v '..tree.SEP..'\n  v Path1\n    . Path2'
     lu.assertEquals(node:tree('bare', 0), treestr)
 
     -- A node with children and some children have children too.
@@ -140,7 +141,77 @@ function TestNodeSimple:test_display_tree()
     -- print('\n' .. self.nList['with_children']:tree('box', 0))
 
 end
+
+function TestNodeSimple:test_display_tree_with_closed_items()
+    local node
+    local root
+    local treestr
+
+    node = self.nList['empty']
+    lu.assertEquals(node:tree('bare', 0, false), '. ')
+    lu.assertEquals(node:tree('bare', 0, false, gen.set({''})), '. ') -- no children
+
+    node = self.nList['simple']
+    lu.assertEquals(node:tree('bare', 0, false), '. Simple')
+    lu.assertEquals(node:tree('bare', 0, false, gen.set({'Simple'})), '. Simple') -- no children
+
+    node = self.nList['linear0']
+    treestr = 'v '..tree.SEP..'\n  v Path1\n    . Path2'
+    lu.assertEquals(node:tree('bare', 0, false), treestr)
+    treestr = 'v '..tree.SEP..'\n  > Path1'
+    closed = gen.set({tree.SEP..'/Path1'})
+    lu.assertEquals(node:tree('bare', 0, false, closed), treestr)
+
+    node = self.nList['with_children']
+    treestr = 'v With Children\n  v Children 1 with Children\n    . Children A\n    . Children B\n  . Children 2\n  . Children 3'
+    lu.assertEquals(node:tree('bare', 0, false), treestr)
+
+    treestr = 'v With Children\n  v Children 1 with Children\n    . Children A\n    . Children B\n  . Children 2\n  . Children 3'
+    closed = gen.set({'Children 1 with Children'})
+    lu.assertEquals(node:tree('bare', 0, false, closed), treestr)
+
+    closed = gen.set({'With ChildrenChildren 1 with Children'})
+    lu.assertEquals(node:tree('bare', 0, false, closed), treestr)
+
+    closed = gen.set({'/With Children/Children 1 with Children'})
+    lu.assertEquals(node:tree('bare', 0, false, closed), treestr)
+
+    closed = gen.set({'With Children/Children 1 with Children'})
+    treestr = 'v With Children\n  > Children 1 with Children\n  . Children 2\n  . Children 3'
+    lu.assertEquals(node:tree('bare', 0, false, closed), treestr)
+
+    closed = gen.set({'With Children/Children 1 with Children', 'With Children/Children 2'})
+    treestr = 'v With Children\n  > Children 1 with Children\n  . Children 2\n  . Children 3'
+    lu.assertEquals(node:tree('bare', 0, false, closed), treestr)
+
+    closed = gen.set({'With Children', 'With Children/Children 1 with Children', 'With Children/Children 2'})
+    treestr = '> With Children'
+    lu.assertEquals(node:tree('bare', 0, false, closed), treestr)
+end
+
+function TestNodeSimple:test_get_abs_label()
+    local node
+    local expected = {
+        empty = '',
+        simple = 'Simple',
+        no_children = 'No Children',
+        with_children = 'With Children',
+        linear0 = tree.SEP,
+        linear2 = tree.SEP..'/Path1/Path2',
+        child1 = 'With Children/Children 1 with Children',
+        child2 = 'With Children/Children 2',
+        child3 = 'With Children/Children 3',
+        childA = 'With Children/Children 1 with Children/Children A',
+        childB = 'With Children/Children 1 with Children/Children B',
+    }
+    for k, v in pairs(expected) do
+        node = self.nList[k]
+        lu.assertEquals(node:get_abs_label(), v)
+    end
+end
+
 -- class TestNode
+
 
 
 --------------------------------------------------------------------------------

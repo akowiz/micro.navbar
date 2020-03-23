@@ -64,19 +64,56 @@ function string:split(sep, max, regex)
    return record
 end
 
---- Return true if table == {}, false otherwise.
--- @tparam table table A table.
--- @return true if the table is {}, false otherwise.
-function gen.is_empty(table)
-    return next(table) == nil
+--- Create a set from a list (table)
+-- @tparam table list The table to use as source.
+-- @treturn table A set (using the elements from list as keys)
+function gen.set(list)
+    local set = {}
+    for _, l in ipairs(list) do
+        set[l] = true
+    end
+    return set
 end
 
---- Return true if val is present in table, false otherwise
--- @param val A value.
+function gen.set_tostring(set)
+    local tab = {}
+    for k, _ in pairs(set) do
+        tab[#tab+1] = k
+    end
+    return table.concat(tab, ', ')
+end
+
+--- Clone/Copy a list (table)
+-- @tparam table table The list to clone.
+function gen.table_clone(list)
+  return { table.unpack(list) }
+end
+
+--- Reverse a list (table).
+-- Note: modify in place.
+-- @tparam table table The list to reverse.
+function gen.table_reverse(list)
+    local i, j = 1, #list
+    while i < j do
+        list[i], list[j] = list[j], list[i]
+        i = i + 1
+        j = j - 1
+    end
+end
+
+--- Return true if list == {}, false otherwise.
 -- @tparam table table A table.
--- @treturn bool true if val is present in table.
-function gen.is_in(val, table)
-    for index, value in ipairs(table) do
+-- @return true if the table is {}, false otherwise.
+function gen.is_empty(list)
+    return next(list) == nil
+end
+
+--- Return true if val is present in list, false otherwise
+-- @param val A value.
+-- @tparam table table A list.
+-- @treturn bool true if val is present in list.
+function gen.is_in(val, list)
+    for _, value in ipairs(list) do
         if value == val then
             return true
         end
