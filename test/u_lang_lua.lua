@@ -197,8 +197,9 @@ function TestLuaBuffer:test_export_structure()
     }
 
     for k, v in pairs(expected) do
-        local luastr = self.bList[k]
-        local tl_list = lgl.tree_to_navbar(lgl.export_structure(luastr))
+        local str = self.bList[k]
+        local root = lgl.export_structure(str)
+        local tl_list = lgl.tree_to_navbar(root)
 
         for i, tl in ipairs(tl_list) do
             lu.assertEquals(tostring(tl), v[i])
