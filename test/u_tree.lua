@@ -43,7 +43,8 @@ function TestNodeSimple:setUp()
         simple =        simple,
         no_children =   no_children,
         with_children = with_children,
-        linear =        linear0,
+        linear0 =       linear0,
+        linear2 =       linear2,
         child1 =        child1,
         child2 =        child2,
         child3 =        child3,
@@ -118,7 +119,7 @@ function TestNodeSimple:test_display_tree()
     lu.assertEquals(node:tree('bare', 0, true), '. Children A\n. Children B')
 
     -- A node with a single child, which has a single child
-    node = self.nList['linear']
+    node = self.nList['linear0']
     treestr = 'v '..tree.SEP..'\n  v Path1\n    . Path2'
     lu.assertEquals(node:tree('bare', 0), treestr)
 
@@ -154,7 +155,7 @@ function TestNodeSimple:test_display_tree_with_closed_items()
     lu.assertEquals(node:tree('bare', 0, false), '. Simple')
     lu.assertEquals(node:tree('bare', 0, false, gen.set({'Simple'})), '. Simple') -- no children
 
-    node = self.nList['linear']
+    node = self.nList['linear0']
     treestr = 'v '..tree.SEP..'\n  v Path1\n    . Path2'
     lu.assertEquals(node:tree('bare', 0, false), treestr)
     treestr = 'v '..tree.SEP..'\n  > Path1'
@@ -195,7 +196,8 @@ function TestNodeSimple:test_get_abs_label()
         simple = 'Simple',
         no_children = 'No Children',
         with_children = 'With Children',
-        linear = tree.SEP,
+        linear0 = tree.SEP,
+        linear2 = tree.SEP..'/Path1/Path2',
         child1 = 'With Children/Children 1 with Children',
         child2 = 'With Children/Children 2',
         child3 = 'With Children/Children 3',
