@@ -148,17 +148,44 @@ function TestNodeSimple:test_display_tree_with_closed_items()
 
     node = self.nList['empty']
     lu.assertEquals(node:tree('bare', 0, false), '. ')
-    lu.assertEquals(node:tree('bare', 0, false, {''}), '. ') -- no children
+    lu.assertEquals(node:tree('bare', 0, false, gen.set({''})), '. ') -- no children
 
     node = self.nList['simple']
     lu.assertEquals(node:tree('bare', 0, false), '. Simple')
-    lu.assertEquals(node:tree('bare', 0, false, {'Simple'}), '. Simple') -- no children
+    lu.assertEquals(node:tree('bare', 0, false, gen.set({'Simple'})), '. Simple') -- no children
 
-    -- node = self.nList['linear']
-    -- treestr = 'v Root\n  v Path1\n    . Path2'
-    -- lu.assertEquals(node:tree('bare', 0, false), treestr)
-    -- treestr = 'v Root\n  > Path1'
-    -- lu.assertEquals(node:tree('bare', 0, false, {'Root/Path1'}), treestr)
+    node = self.nList['linear']
+    treestr = 'v Root\n  v Path1\n    . Path2'
+    lu.assertEquals(node:tree('bare', 0, false), treestr)
+    treestr = 'v Root\n  > Path1'
+    closed = gen.set({'Root/Path1'})
+    lu.assertEquals(node:tree('bare', 0, false, closed), treestr)
+
+    node = self.nList['with_children']
+    treestr = 'v With Children\n  v Children 1 with Children\n    . Children A\n    . Children B\n  . Children 2\n  . Children 3'
+    lu.assertEquals(node:tree('bare', 0, false), treestr)
+
+    treestr = 'v With Children\n  v Children 1 with Children\n    . Children A\n    . Children B\n  . Children 2\n  . Children 3'
+    closed = gen.set({'Children 1 with Children'})
+    lu.assertEquals(node:tree('bare', 0, false, closed), treestr)
+
+    closed = gen.set({'With ChildrenChildren 1 with Children'})
+    lu.assertEquals(node:tree('bare', 0, false, closed), treestr)
+
+    closed = gen.set({'/With Children/Children 1 with Children'})
+    lu.assertEquals(node:tree('bare', 0, false, closed), treestr)
+
+    closed = gen.set({'With Children/Children 1 with Children'})
+    treestr = 'v With Children\n  > Children 1 with Children\n  . Children 2\n  . Children 3'
+    lu.assertEquals(node:tree('bare', 0, false, closed), treestr)
+
+    closed = gen.set({'With Children/Children 1 with Children', 'With Children/Children 2'})
+    treestr = 'v With Children\n  > Children 1 with Children\n  . Children 2\n  . Children 3'
+    lu.assertEquals(node:tree('bare', 0, false, closed), treestr)
+
+    closed = gen.set({'With Children', 'With Children/Children 1 with Children', 'With Children/Children 2'})
+    treestr = '> With Children'
+    lu.assertEquals(node:tree('bare', 0, false, closed), treestr)
 end
 
 function TestNodeSimple:test_get_abs_label()
