@@ -143,6 +143,17 @@ end
 -- class TestNode
 
 
+function TestNodeSimple:test_display_tree_with_closed_items()
+    local node
+    local root
+    local treestr
+
+    node = self.nList['empty']
+    lu.assertEquals(node:tree('bare', 0, true), '')
+
+end
+
+
 --------------------------------------------------------------------------------
 -- Running the test
 --------------------------------------------------------------------------------
