@@ -161,7 +161,6 @@ function TestNode:test_can_display_node()
 end
 
 -- class TestNode
---]]
 
 
 --------------------------------------------------------------------------------
