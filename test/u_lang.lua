@@ -153,7 +153,7 @@ function TestListTree:test_tree_to_navbar()
         childB = { '. Children B', },
     }
     for k, v in pairs(expected) do
-        local tl_list = self.nList[k]:to_navbar()
+        local tl_list = self.nList[k]:to_treelines()
 
         for i, tl in ipairs(tl_list) do
             lu.assertEquals(tostring(tl), v[i])
