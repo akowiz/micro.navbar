@@ -84,6 +84,86 @@ end
 
 -------------------------------------------------------------------------------
 
+TestListTree = {} -- class
+
+function TestListTree:setUp()
+    local no_children = lg.Node("No Children")
+    local with_children = lg.Node("With Children")
+    local child1 = lg.Node("Children 1 with Children")
+    local child2 = lg.Node("Children 2")
+    local child3 = lg.Node("Children 3")
+    local childA = lg.Node("Children A")
+    local childB = lg.Node("Children B")
+
+    local linear0 = lg.Node('/')
+    local linear1 = lg.Node('Path1')
+    local linear2 = lg.Node('Path2')
+    linear0:append(linear1)
+    linear1:append(linear2)
+
+    local simple = lg.Node("Simple")
+
+    with_children:append(child1)
+    with_children:append(child2)
+    with_children:append(child3)
+    child1:append(childA)
+    child1:append(childB)
+
+    self.nList = {
+        empty =         lg.Node(),
+        simple =        simple,
+        no_children =   no_children,
+        with_children = with_children,
+        linear =        linear0,
+        child1 =        child1,
+        child2 =        child2,
+        child3 =        child3,
+        childA =        childA,
+        childB =        childB,
+    }
+end
+
+function TestListTree:test_tree_to_navbar()
+    local tl_list
+
+    expected = {
+        empty =         { '. ', },
+        simple =        { '. Simple', },
+        no_children =   { '. No Children', },
+        with_children = {
+            'v With Children',
+            '  v Children 1 with Children',
+            '    . Children A',
+            '    . Children B',
+            '  . Children 2',
+            '  . Children 3',
+        },
+        linear = {
+            'v /',
+            '  v Path1',
+            '    . Path2',
+        },
+        child1 = {
+            'v Children 1 with Children',
+            '  . Children A',
+            '  . Children B',
+        },
+        child2 = { '. Children 2', },
+        child3 = { '. Children 3', },
+        childA = { '. Children A', },
+        childB = { '. Children B', },
+    }
+    for k, t in pairs(expected) do
+        -- print('processing ' .. k)
+        tl_list = lg.tree_to_navbar(self.nList[k])
+        for i, line in ipairs(tl_list) do
+            lu.assertEquals(tostring(tl_list[i]), t[i])
+        end
+    end
+end
+
+-- class TestListTree
+
 
 --------------------------------------------------------------------------------
 -- Running the test
