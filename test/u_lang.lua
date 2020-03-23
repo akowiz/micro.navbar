@@ -48,6 +48,40 @@ end
 
 -- class TestNode
 
+
+-------------------------------------------------------------------------------
+
+TestTreeLine = {} -- class
+
+function TestTreeLine:setUp()
+    local rootc = lg.Node('Root C')
+    rootc:append(lg.Node('Child A'))
+
+    self.tlList = {
+        empty  = lg.TreeLine(),
+        simple = lg.TreeLine(lg.Node('Simple')),
+        root   = lg.TreeLine(lg.Node('Root'), '', 'root'),
+        full   = lg.TreeLine(lg.Node('Full'), '  ', 'nth_key'),
+        rootc  = lg.TreeLine(rootc, '', 'root_open'),
+    }
+end
+
+function TestTreeLine:test_as_str()
+    local expected = {
+        empty  = '',
+        simple = 'Simple',
+        root   = '. Root',
+        full   = '  . Full',
+        rootc  = 'v Root C',
+    }
+    for k, v in pairs(self.tlList) do
+        lu.assertEquals(tostring(v), expected[k])
+    end
+end
+
+-- class TestListTree
+
+
 -------------------------------------------------------------------------------
 
 
