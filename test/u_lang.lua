@@ -59,9 +59,9 @@ function TestTreeLine:setUp()
     self.tlList = {
         empty  = tree.TreeLine(),
         simple = tree.TreeLine(lg.Node('Simple')),
-        root   = tree.TreeLine(lg.Node('Root'), '', 'root'),
-        full   = tree.TreeLine(lg.Node('Full'), '  ', 'nth_key'),
-        rootc  = tree.TreeLine(rootc, '', 'root_open'),
+        root   = tree.TreeLine(lg.Node('Root'), '', 'root_d'),
+        full   = tree.TreeLine(lg.Node('Full'), '  ', 'nth_d'),
+        rootc  = tree.TreeLine(rootc, '', 'root_o'),
     }
 end
 
