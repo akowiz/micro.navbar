@@ -200,19 +200,10 @@ function TestLuaBuffer:test_export_structure()
 
     for k, v in pairs(expected) do
         local luastr = self.bList[k]
-        local root = lgl.export_structure(luastr)
-        local ttree = lgl.tree_to_navbar(root)
+        local tl_list = lgl.tree_to_navbar(lgl.export_structure(luastr))
 
-        -- if k == 'normal' then
-            -- print('\n' .. root:tree() .. '\n')
---
-            -- for i, t in ipairs(ttree) do
-                -- print(t['text'])
-            -- end
-        -- end
-
-        for i, t in ipairs(ttree) do
-            lu.assertEquals(t['text'], expected[k][i])
+        for i, tl in ipairs(tl_list) do
+            lu.assertEquals(tostring(tl), v[i])
         end
     end
 end

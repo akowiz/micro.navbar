@@ -153,11 +153,11 @@ function TestListTree:test_tree_to_navbar()
         childA = { '. Children A', },
         childB = { '. Children B', },
     }
-    for k, t in pairs(expected) do
-        -- print('processing ' .. k)
-        tl_list = lg.tree_to_navbar(self.nList[k])
-        for i, line in ipairs(tl_list) do
-            lu.assertEquals(tostring(tl_list[i]), t[i])
+    for k, v in pairs(expected) do
+        local tl_list = lg.tree_to_navbar(self.nList[k])
+
+        for i, tl in ipairs(tl_list) do
+            lu.assertEquals(tostring(tl), v[i])
         end
     end
 end
