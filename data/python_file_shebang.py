@@ -1,3 +1,6 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
 DM_NONE = 0
 DEF_TITLE = 'title'
 
