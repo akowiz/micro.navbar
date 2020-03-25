@@ -93,7 +93,7 @@ end
 
 function TestTableReverse:test_table_get_reversed()
     for k, tab in pairs(self.tList) do
-        list = gen.table_clone(tab)
+        list = gen.table_deepcopy(tab)
         gen.table_reverse(list)
         for i, _ in ipairs(list) do
             lu.assertEquals(list[i], tab[#list-i+1])
