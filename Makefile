@@ -2,6 +2,12 @@
 # A generic Makefile for handling lua5.3 developpment process.
 ################################################################################
 
+LUA51 = 'lua5.1'
+LUA52 = 'lua5.2'
+LUA53 = 'lua5.3'
+
+LUA_DEFAULT = $(LUA51)
+
 SRC_DIR = 'navbar'
 
 LOCAL_DIRS  := $(shell find $(SRC_DIR) -type d)
@@ -49,10 +55,10 @@ push:
 	git push --tags
 
 testu:
-	@for file in $(TEST_FILES_UNIT); do echo $$file; lua $$file; done
+	@for file in $(TEST_FILES_UNIT); do echo $$file; $(LUA_DEFAULT) $$file; done
 
 testf:
-	@for file in $(TEST_FILES_FUNC); do echo $$file; lua $$file; done
+	@for file in $(TEST_FILES_FUNC); do echo $$file; $(LUA_DEFAULT) $$file; done
 
 test: testf testu
 
