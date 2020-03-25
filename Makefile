@@ -2,11 +2,11 @@
 # A generic Makefile for handling lua5.3 developpment process.
 ################################################################################
 
-LUA51 = 'lua5.1'
-LUA52 = 'lua5.2'
-LUA53 = 'lua5.3'
+DEFAULT_LUA = 'lua5.1'
 
-LUA_DEFAULT = $(LUA51)
+# Use lua5.1 unless another version has been specified on the command line.
+# make test LUA=lua5.3
+LUA?= $(DEFAULT_LUA)
 
 SRC_DIR = 'navbar'
 
@@ -28,12 +28,14 @@ help:
 	@echo "Available rules:"
 	@echo "----------------"
 	@echo
-	@echo "clear:   clear the terminal."
+	@echo "clear: 	clear the terminal."
 	@echo "clean: 	clean the generated files (doc, etc.)"
 	@echo
 	@echo "doc: 	build the documentation."
 	@echo
-	@echo "push:    push repository on server with git push and git push --tags."
+	@echo "test: 	run the functional and unit tests (can specify the version of lua to use with LUA=lua5.3, default to lua5.1)"
+	@echo
+	@echo "push: 	push repository on server with git push and git push --tags."
 
 doc:
 	@ldoc -q -p 'micro_navbar' -d doc navbar 2>/dev/null
@@ -55,10 +57,10 @@ push:
 	git push --tags
 
 testu:
-	@for file in $(TEST_FILES_UNIT); do echo $$file; $(LUA_DEFAULT) $$file; done
+	@for file in $(TEST_FILES_UNIT); do echo $$file; $(LUA) $$file; done
 
 testf:
-	@for file in $(TEST_FILES_FUNC); do echo $$file; $(LUA_DEFAULT) $$file; done
+	@for file in $(TEST_FILES_FUNC); do echo $$file; $(LUA) $$file; done
 
 test: testf testu
 
