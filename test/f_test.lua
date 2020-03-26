@@ -64,32 +64,21 @@ function TestBuffer:test_can_display_python_structure()
     local root = lgp.export_structure(self.buffer)
 
     -- Sort the children of root
-    local children = root:get_children()
-    table.sort(children)
+    local classes   = root:get_child_named('Classes')
+    local functions = root:get_child_named('Functions')
+    local variables = root:get_child_named('Variables')
 
-    local classes = lgp.Node('Classes')
-    local functions = lgp.Node('Functions')
-    local variables = lgp.Node('Variables')
+    lu.assertEquals(#root:get_children(), 3)
 
-    for k, v in ipairs(children) do
-        if v.kind == lg.T_CLASS then
-            classes:append(v)
-        elseif v.kind == lg.T_FUNCTION then
-            functions:append(v)
-        elseif v.kind == lg.T_VARIABLE then
-            variables:append(v)
-        end
-    end
-
-    -- We expect a table in return with data in it
+    -- We expect non nil values
     lu.assertEvalToTrue(classes)
     lu.assertEvalToTrue(functions)
     lu.assertEvalToTrue(variables)
 
     -- From our test files, there should be at least 1 element in each category.
-    -- lu.assertNotEquals(gen.is_empty(classes.children), false)
-    -- lu.assertNotEquals(gen.is_empty(functions.children), false)
-    -- lu.assertNotEquals(gen.is_empty(variables.children), false)
+    lu.assertEquals(gen.is_empty(classes:get_children()), false)
+    lu.assertEquals(gen.is_empty(functions:get_children()), false)
+    lu.assertEquals(gen.is_empty(variables:get_children()), false)
 
     -- We expect the items in structure to be nodes
     local class_root_1 = lgp.Node("Foo", lgp.T_CLASS, 0, 34)
@@ -103,6 +92,7 @@ function TestBuffer:test_can_display_python_structure()
     local c_children = classes:get_children()
     local f_children = functions:get_children()
     local v_children = variables:get_children()
+
     lu.assertEquals(c_children[1].name, class_root_2.name)
     lu.assertEquals(c_children[2].name, class_root_1.name)
     lu.assertEquals(f_children[1].name, func_root_1.name)
