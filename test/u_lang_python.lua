@@ -128,6 +128,7 @@ function TestPythonBuffer:test_export_structure()
         '. Functions',
         '',
         '. Variables',
+        '',
     }
     expected['functions_only'] = {
         '. Classes',
@@ -140,6 +141,7 @@ function TestPythonBuffer:test_export_structure()
         '  . F4',
         '',
         '. Variables',
+        '',
     }
     expected['variables_only'] = {
         '. Classes',
@@ -151,6 +153,7 @@ function TestPythonBuffer:test_export_structure()
         '  . B',
         '  . C',
         '  . D',
+        '',
     }
     expected['root_items'] = {
         'v Classes',
@@ -164,6 +167,7 @@ function TestPythonBuffer:test_export_structure()
         'v Variables',
         '  . V1',
         '  . V2',
+        '',
     }
     expected['full']   = {
         'v Classes',
@@ -188,6 +192,7 @@ function TestPythonBuffer:test_export_structure()
         '  . VAR2',
         '  . VAR3',
         '  . VAR4',
+        '',
     }
 
     for k, v in pairs(expected) do

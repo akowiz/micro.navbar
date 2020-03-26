@@ -132,6 +132,7 @@ function TestLuaBuffer:test_export_structure()
         '  . F4',
         '',
         '. Variables',
+        '',
     }
     expected['variables_only'] = {
         'v Objects',
@@ -145,6 +146,7 @@ function TestLuaBuffer:test_export_structure()
         '  . B',
         '  . C',
         '  . D',
+        '',
     }
     expected['root_items'] = {
         '. Objects',
@@ -156,6 +158,7 @@ function TestLuaBuffer:test_export_structure()
         'v Variables',
         '  . V1',
         '  . V2',
+        '',
     }
     expected['full']   = {
         'v Objects',
@@ -179,6 +182,7 @@ function TestLuaBuffer:test_export_structure()
         '  . VAR2',
         '  . VAR3',
         '  . VAR4',
+        '',
     }
     expected['normal']  = {
         'v Objects',
@@ -194,6 +198,7 @@ function TestLuaBuffer:test_export_structure()
         '',
         'v Variables',
         '  . DBG',
+        '',
     }
 
     for k, v in pairs(expected) do
