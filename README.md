@@ -49,9 +49,13 @@ v Variables
 
 Supported Languages
 -------------------
-- Python: Python is a fairly rigid programming language (use of indentation, etc.) and I wrote a line parser for it that should work in most situations.
+Notes:
+- For the current version, I am using a line parser with some regular expressions. I am aware such parser has a lot of limitations, but this is good enough for a MVP (minimum viable product) and for my current needs. Ideally we should be using a proper parser such as tree-sitter (someone is working on integrating it with micro for the syntax highlighting, and maybe we coould piggy-back on the effort for this plugin). If you want more langages to be supported at the moment, you need to contribute a basic parser like the one I wrote for the python and lua languages.
 
-- Lua : Lua is a fairly flexible programming language. It supports object oriented programming but not at the language level (meaning there are multiple ways to implement classes). So, I resorted to write a line parser (a bit of a hack) and it should work as long as your write "clean" code (if your code looks more like python actually). It will "break" (not display all data) if your program looks like the result of a minifier (a program on a single line) or if you use inner functions. I needed to support lua for my own development process (so I build the minimum to support my needs).
+- Python: Python is a fairly rigid programming language (through the use of indentation, etc.) and the line parser should do the job in most situations.
+
+- Lua : Lua is a fairly flexible programming language. It supports object oriented programming but not at the language level (meaning there are multiple ways to implement classes). So, I resorted to write a line parser (a bit of a hack) and it should work as long as your write "clean" code (if your code looks more like python actually). It will return poor results (not display all data) if your program looks like the result of a minifier (a program on a single line) or if you use inner functions (functions defines directly inside a table for example).
+
 
 
 Supported Platforms
@@ -72,16 +76,11 @@ Settings
 - treeview_rune_toggle: string (single letter), the key to use in the tree_view to toggle a node with children between open and closed. Default to ' ' (space bar).
 
 
-Notes
------
-Current implementation should be easy to adapt to any language using fix indentation (like the python language). For other languages, we would need to rely on another mecanism.
-
-
 BUGS
 ----
 
 
 TODO
 ----
-- Better mouse support.
-- Write a proper parser to extract objects, classes, functions, variables, constants with depth
+- Provide better mouse support.
+- Integrate with a proper parser like tree-sitter to extract the symbols: objects, classes, functions, variables, constants, etc.
