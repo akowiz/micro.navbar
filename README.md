@@ -1,5 +1,7 @@
 # Micro Navbar Plugin
 
+![Navbar Plugin in Action](micro.navbar.gif)
+
 *Written in Lua* (Notes: micro seems to be using lua-5.1 and not the latest lua version lua-5.3)
 
 Navigation bar (class and functions) for micro editor.
