@@ -78,7 +78,9 @@ Settings
 
 BUGS
 ----
-- Opening/closing classes is ok, but opening/closing Functions and Variables causes the menu to jump in the sidebar (cause by function to position code in the middle).
+- When the window's height is smaller than the display_content, Opening/closing items causes the menu to jump in the sidebar (cause by function to position code in the middle).
+- When jumping to 'combine_data', the selected line is not being displayed on screen (although it is being selected).
+- Small terminal (15 lines), open file, close_all, open_all, close_all, buffer is weird. Need arrow up/down to display header.
 
 TODO
 ----
