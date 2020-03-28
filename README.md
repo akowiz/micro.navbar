@@ -78,7 +78,7 @@ Settings
 
 BUGS
 ----
-- When jumping to node in the main windows, we shouldn't move when using the toggle_node command.
+
 
 TODO
 ----
