@@ -21,9 +21,9 @@ def display_something():
 
     return
 
-def zorglub():
+def func_z():
 
-    def spirou():
+    def func_s():
         pass
 
 thisismoot = 3
@@ -39,7 +39,7 @@ class Foo():
         pass
 
 class Bar(Toto):
-    class InnerFoo():
+    class InnerBar():
         def __init__(self):
             pass
 
