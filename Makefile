@@ -11,7 +11,7 @@ LUA?= $(DEFAULT_LUA)
 SRC_DIR = 'navbar'
 
 LOCAL_DIRS  := $(shell find $(SRC_DIR) -type d)
-LOCAL_FILES := $(shell find $(SRC_DIR) -name '*.lua' -or -name '*.md' -or -name '*.json')
+LOCAL_FILES := $(shell find $(SRC_DIR) -name '*.lua' -or -name '*.md' -or -name '*.json' -or -name '*.yaml')
 
 TEST_DIR = 'test'
 TEST_FILES_FUNC := $(shell find $(TEST_DIR) -name 'f_*.lua')
