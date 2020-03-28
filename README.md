@@ -78,7 +78,7 @@ Settings
 
 BUGS
 ----
-- When jumping to 'combine_data', the selected line is not being displayed on screen (although it is being selected), this is related to Center(), same as for the treeview.
+- When jumping to node in the main windows, we shouldn't move when using the toggle_node command.
 
 TODO
 ----
