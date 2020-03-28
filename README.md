@@ -4,7 +4,7 @@
 
 *Written in Lua* (Notes: micro seems to be using lua-5.1 and not the latest lua version lua-5.3)
 
-Navigation bar (class and functions) for micro editor.
+Navigation bar (class and functions) for micro editor (strongly influenced by the design of the filemanager plugin for micro).
 
 There are 3 styles defined to display the tree: 'bare', 'ascii' and 'box'
 ```
@@ -78,7 +78,7 @@ Settings
 
 BUGS
 ----
-
+- Opening/closing classes is ok, but opening/closing Functions and Variables causes the menu to jump in the sidebar (cause by function to position code in the middle).
 
 TODO
 ----
