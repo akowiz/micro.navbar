@@ -58,7 +58,7 @@ For the current version, I am using a line parser with some regular expressions.
 
 Supporting other languages
 --------------------------
-To support a new language, you must provide a new lua module (for example 'lang_go.lua'), that will provide the necessary function to extract the structure of a document written in that language. Follow the best practises for creating a new lua module:
+To support a new language, you must provide a new lua module whose name is the filetype you want to add support for. For example to add support for the go language, you need to create a 'go.lua' file in 'navbar/supported'. This modue will have to provide the necessary function to extract the structure of a document written in that language. Follow the best practises for creating a new lua module:
 ```
 local lgg = {} -- the module to add support for the go language.
 ```
@@ -66,9 +66,9 @@ local lgg = {} -- the module to add support for the go language.
 Then you need to import some of the modules from the plugin to have access to a tree/node object and various constants (see lang.lua).
 
 ```
-local gen  = require('generic')
-local tree = require('tree')
-local lg   = require('lang')
+local gen  = require('../generic')
+local tree = require('../tree')
+local lg   = require('../lang')
 ```
 
 Finally, you need to provide a function `lgg.export_structure(str)` which will take a string as argument (the content of the buffer), and returns a Tree (lg.Node object) of the various objects from the structure.
@@ -96,11 +96,6 @@ For the go language, you would want to generate a tree like:
         Variable1
         Variable2
 ```
-
-Once that is done, you need to integrate your module into navbar by:
-1. Adding a require statement such as `local lgg = require("lang_go")`.
-2. Modifying NavBufConf:supported() to add the FileType in the list of supported Filetypes.
-3. Modifying refresh_structure() to add the call to your function for your FileType.
 
 That's it.
 
