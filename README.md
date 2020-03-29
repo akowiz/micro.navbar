@@ -116,7 +116,7 @@ Settings
 - softwrap: bool (true or false), set to true to use wrapping in the treeview window. Default to false.
 - persistent: bool (true or false), set to true to have the list of closed nodes be persistent when closing/opening micro.
 - treestyle: string ('bare', 'ascii', 'box'), the style to use to display the tree. Default to 'bare'.
-- treestyle_spacing: int (0, 1, etc.), the number of extra-characters to use for the tree branch. Default to 0.
+- treestyle_spacing: int (0, 1, etc.), the number of extra-characters to use for the tree branches. Default to 0.
 - treeview_rune_close_all: string (single letter), the key to use in the tree_view to close all nodes. Default to 'c'.
 - treeview_rune_goto: string (single letter), the key to use in the tree_view to move the cursor in the main_view to the corresponding item. Default to 'g'.
 - treeview_rune_open_all: string (single letter), the key to use in the tree_view to open all nodes. Default to 'o'.
