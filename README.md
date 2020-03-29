@@ -112,9 +112,9 @@ This plugin has been developped under linux. It should work on most unix/linux d
 
 Settings
 --------
-- openonstart: bool (true or false), set to true to open when micro is open. Default to false.
+- openonstart: bool (true or false), set to true to open navbar for supported files when micro is open. Default to false.
 - softwrap: bool (true or false), set to true to use wrapping in the treeview window. Default to false.
-- persistent: bool (true or false), set to true to have the list of closed nodes be persistent when closing/opening micro.
+- persistent: bool (true or false), set to true to have the list of closed nodes be persistent when closing/opening micro. Default to false.
 - treestyle: string ('bare', 'ascii', 'box'), the style to use to display the tree. Default to 'bare'.
 - treestyle_spacing: int (0, 1, etc.), the number of extra-characters to use for the tree branches. Default to 0.
 - treeview_rune_close_all: string (single letter), the key to use in the tree_view to close all nodes. Default to 'c'.
