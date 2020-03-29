@@ -125,7 +125,6 @@ Known Bugs
 
 TODO
 ----
-- Provide an easier way to add support for new languages.
 - Clean up the code.
 - Provide better mouse support.
 - Integrate with a proper parser like tree-sitter to extract the symbols: objects, classes, functions, variables, constants, etc.
