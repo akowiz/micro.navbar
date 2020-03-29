@@ -125,10 +125,12 @@ Settings
 
 Known Bugs
 ----------
+- The 'openonstart' setting can be specified on a per-filetype basis, unfortunately, there is a small issue with micro at the moment (https://github.com/zyedidia/micro/issues/1596) that prevent it from working. The global setting works though.
 
 
 TODO
 ----
 - Provide an easier way to add support for new languages.
+- Clean up the code.
 - Provide better mouse support.
 - Integrate with a proper parser like tree-sitter to extract the symbols: objects, classes, functions, variables, constants, etc.
