@@ -6,46 +6,10 @@
 
 Navigation bar (class and functions) for micro editor (strongly influenced by the design of the filemanager plugin for micro).
 
-There are 3 styles defined to display the tree: 'bare', 'ascii' and 'box'
-```
-* 'bare' style *
+This repository is for people who wish to contribute to the navbar plugin, using my development tools (Makefile, tests, etc.). It use https://github.com/akowiz/micro.navbar.plugin as a submodule (so you need to run `git submodule update --init --recursive` after clonning this repository to have access to all the plugin files).
 
-v Classes               > Classes
-  v TestClass1            > TestClass1
-    . __init__            . TestClass2
-    . __str__           > Functions
-  . TestClass2          > Variables
-v Functions
-  . TestFunction
-v Variables
-  . TestVariable
+If are only interested in the files required to install/run the plugin, please go to https://github.com/akowiz/micro.navbar.plugin and download the latest release or use micro plugin manager (`micro -plugin install navbar`).
 
-
-* 'ascii' style *
-
-- Classes               - Classes
-  - TestClass1            + TestClass1
-  | . __init__            L TestClass2
-  | L __str__           + Functions
-  L TestClass2          + Variables
-- Functions
-  L TestFunction
-- Variables
-  L TestVariable
-
-
-* 'box' style *
-
-▾ Classes               ▾ Classes
-  ├ TestClass1            ╞ TestClass1
-  │ ├ __init__            └ TestClass2
-  │ └ __str__           ▸ Functions
-  └ TestClass2          ▸ Variables
-▾ Functions
-  └ TestFunction
-▾ Variables
-  └ TestVariable
-```
 
 Supported Languages
 -------------------
@@ -103,24 +67,6 @@ That's it.
 Supported Platforms
 -------------------
 This plugin has been developped under linux. It should work on most unix/linux derrivative (such as termux on android). It has not been tested on MacOS nor on Windows. Feel free to contribute to support these platforms.
-
-
-Settings
---------
-- openonstart: bool (true or false), set to true to open navbar for supported files when micro is open. Default to false.
-- softwrap: bool (true or false), set to true to use wrapping in the treeview window. Default to false.
-- persistent: bool (true or false), set to true to have the list of closed nodes be persistent when closing/opening micro. Default to false.
-- treestyle: string ('bare', 'ascii', 'box'), the style to use to display the tree. Default to 'bare'.
-- treestyle_spacing: int (0, 1, etc.), the number of extra-characters to use for the tree branches. Default to 0.
-- treeview_rune_close_all: string (single letter), the key to use in the tree_view to close all nodes. Default to 'c'.
-- treeview_rune_goto: string (single letter), the key to use in the tree_view to move the cursor in the main_view to the corresponding item. Default to 'g'.
-- treeview_rune_open_all: string (single letter), the key to use in the tree_view to open all nodes. Default to 'o'.
-- treeview_rune_toggle: string (single letter), the key to use in the tree_view to toggle a node with children between open and closed. Default to ' ' (space bar).
-
-
-Known Bugs
-----------
-- The 'openonstart' setting can be specified on a per-filetype basis, unfortunately, there is a small issue with micro at the moment (https://github.com/zyedidia/micro/issues/1596) that prevent it from working for buffers created after micro has started. It does work for the file (specified on the command line) that will be displayed by micro.
 
 
 TODO
