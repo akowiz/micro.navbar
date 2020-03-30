@@ -74,6 +74,9 @@ Supported Platforms
 -------------------
 This plugin has been developped under linux. It should work on most unix/linux derrivative (such as termux on android). It has not been tested on MacOS nor on Windows. Feel free to contribute to support these platforms.
 
+Development
+-----------
+You can generate documentation about the lua code using the Makefile provided (it requires lua5.1 and ldoc).
 
 TODO
 ----
