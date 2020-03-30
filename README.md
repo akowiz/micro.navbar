@@ -6,9 +6,15 @@
 
 Navigation bar (class and functions) for micro editor (strongly influenced by the design of the filemanager plugin for micro).
 
-This repository is for people who wish to contribute to the navbar plugin, using my development tools (Makefile, tests, etc.). It use https://github.com/akowiz/micro.navbar.plugin as a submodule (so you need to run `git submodule update --init --recursive` after clonning this repository to have access to all the plugin files).
+This repository is for people who wish to contribute to the navbar plugin, using my development tools (Makefile, tests, etc.). It use https://github.com/akowiz/micro.navbar.plugin as a ![submodule](https://github.blog/2016-02-01-working-with-submodules/).
 
-If are only interested in the files required to install/run the plugin, please go to https://github.com/akowiz/micro.navbar.plugin and download the latest release or use micro plugin manager (`micro -plugin install navbar`).
+It means you need to run some command after clonning this repository to access all the files:
+
+`git submodule update --init --recursive`
+
+If are only interested in the files required to install/run the plugin, please go to the ![micro.navbar.plugin](https://github.com/akowiz/micro.navbar.plugin) repository and download the latest release or use micro plugin manager:
+
+`micro -plugin install navbar`
 
 
 Supported Languages
