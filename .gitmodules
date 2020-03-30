@@ -1,3 +1,4 @@
 [submodule "navbar"]
 	path = navbar
 	url = git@github.com:akowiz/micro.navbar.plugin.git
+	branch = master
