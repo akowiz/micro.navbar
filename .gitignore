@@ -1,4 +1,5 @@
 support/
 doc/
+local/
 
 test/old_test.lua
