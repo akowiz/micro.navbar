@@ -120,7 +120,7 @@ Settings
 
 Known Bugs
 ----------
-- The 'openonstart' setting can be specified on a per-filetype basis, unfortunately, there is a small issue with micro at the moment (https://github.com/zyedidia/micro/issues/1596) that prevent it from working. The global setting works though.
+- The 'openonstart' setting can be specified on a per-filetype basis, unfortunately, there is a small issue with micro at the moment (https://github.com/zyedidia/micro/issues/1596) that prevent it from working for buffers created after micro has started. It does work for files specified on the command line when micro is started though.
 
 
 TODO
