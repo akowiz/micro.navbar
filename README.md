@@ -1,4 +1,4 @@
-# Micro Navbar Plugin
+# Micro Navbar Plugin (development environment)
 
 ![Navbar Plugin in Action](assets/micro.navbar.gif)
 
