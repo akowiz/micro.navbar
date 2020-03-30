@@ -80,7 +80,7 @@ You may parse the buffer any way you want (I used line parser for python and lua
 2. the kind of the object (found in the module lg),
 3. the line the item can be found in the buffer.
 
-For python, I also recorded the indentation in order to build a proper hierarchy of the python objects.
+If you want to handle objects hierarchy, you may have to record more information (such as indentation, block depth, etc.).  For example, for the python language, we record the indentation because it provides important information on how to build the hierarchy of objects.
 
 For the go language, you would want to generate a tree like:
 ```
