@@ -17,7 +17,7 @@ TEST_DIR = 'test'
 TEST_FILES_FUNC := $(shell find $(TEST_DIR) -name 'f_*.lua')
 TEST_FILES_UNIT := $(shell find $(TEST_DIR) -name 'u_*.lua')
 
-DEST = 'local/micro/plug'
+DEST?= 'local/micro/plug'
 
 ################################################################################
 # Rules
@@ -32,6 +32,7 @@ help:
 	@echo "clean: 	clean the generated files (doc, etc.)"
 	@echo
 	@echo "doc: 	build the documentation."
+	@echo "install	install the plugin locally (you can specify DEST='path/to/micro/conf' to use an alternate destination directory)"
 	@echo
 	@echo "test: 	run the functional and unit tests (can specify the version of lua to use with LUA=lua5.3, default to lua5.1)"
 	@echo
