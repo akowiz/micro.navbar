@@ -9,7 +9,7 @@ package.path = "navbar/?.lua;" .. package.path
 local lu  = require('luaunit')
 local gen = require('generic')
 local lg  = require('lang')
-local lgl = require('lang_lua')
+local lgl = require('supported/lua')
 
 
 -------------------------------------------------------------------------------
