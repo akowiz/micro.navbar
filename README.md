@@ -25,6 +25,8 @@ For the current version, I am using a line parser with some regular expressions.
 
 - Lua : Lua is a fairly flexible programming language. It supports object oriented programming but not at the language level (meaning there are multiple ways to implement classes). So, I resorted to write a line parser (a bit of a hack) and it should work as long as your write "clean" code (if your code looks more like python actually). It will return poor results (not display all data) if your program looks like the result of a minifier (a program on a single line) or if you use inner functions (functions defines directly inside a table for example).
 
+- Go : Support for Go is like support for Lua. It depends how clean you code it, whether you use some of the shortcuts provided by the language or not (if your code is very explicit, it should work fine). But clearly we need to find a better way than a line parser to extract the structure of a file.
+
 
 Supporting other languages
 --------------------------
@@ -65,6 +67,9 @@ For the go language, you would want to generate a tree like:
     Variables
         Variable1
         Variable2
+   constants
+        constant1
+        constant2
 ```
 
 That's it.
